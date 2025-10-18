@@ -1,0 +1,39 @@
+.menu-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+.menu-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.menu-item {
+  border: 2px solid #f5b300;
+  border-radius: 10px;
+  width: 150px;
+  height: 150px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item img {
+  width: 70px;
+  height: 70px;
+}
+
+.menu-item p {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
