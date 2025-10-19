@@ -1,17 +1,17 @@
 import React from "react";
-import Navbar from "./components/Navbar";
-import MenuSection from "./components/MenuSection";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import MenuPage from "./pages/MenuPage"; // trang này bạn sẽ làm sau
 import "./App.css";
 
 function App() {
   return (
-    <div className="app-container">
-      <Navbar />
-      <div className="banner">
-        <img src="/src/assets/banner.webp" alt="banner" />
-      </div>
-      <MenuSection />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<MenuPage />} />
+      </Routes>
+    </Router>
   );
 }
 
