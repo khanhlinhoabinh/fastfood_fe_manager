@@ -5,7 +5,6 @@ import axios from "axios";
 const MenuSection = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [selectedFunction, setSelectedFunction] = useState("list");
-<<<<<<< Updated upstream
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [pageSize] = useState(5); // Số món mỗi trang
@@ -34,7 +33,6 @@ const MenuSection = () => {
       })
       .catch((err) => console.error("Lỗi khi lấy menu:", err));
   }, [currentPage]);
-=======
   const [searchTerm, setSearchTerm] = useState("");
 
   // ✅ Đọc API base URL từ file .env
@@ -51,7 +49,6 @@ const MenuSection = () => {
   useEffect(() => {
     fetchMenuItems();
   }, []);
->>>>>>> Stashed changes
 
   // ✅ Tìm kiếm món ăn (đúng key BE là keyword)
   const handleSearch = () => {

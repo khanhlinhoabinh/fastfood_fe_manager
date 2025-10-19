@@ -67,7 +67,6 @@
 }
 
 .no-data {
-<<<<<<< Updated upstream
   text-align: center;
   color: #999;
   padding: 20px;
@@ -105,10 +104,8 @@
   background-color: #e65100;
   color: white;
   font-weight: bold;
-=======
     text-align: center;
     font-style: italic;
     color: #777;
     padding: 20px;
->>>>>>> Stashed changes
 }
