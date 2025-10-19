@@ -13,7 +13,11 @@ export default function HomeSection() {
       path: "/customers",
     },
     { name: "Đơn Hàng", img: "/src/assets/donhang.png", path: "/orders" },
-    { name: "Chi tiết đơn hàng", img: "/src/assets/chitietdonhang.png" },
+    {
+      name: "Chi tiết đơn hàng",
+      img: "/src/assets/chitietdonhang.png",
+      path: "/order-details",
+    },
     { name: "Thanh Toán", img: "/src/assets/thanhToan.png" },
     { name: "Nhân Viên", img: "/src/assets/nhanVien.png" },
     { name: "Khuyến Mãi", img: "/src/assets/khuyenMai.png" },
