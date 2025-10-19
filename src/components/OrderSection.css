@@ -172,3 +172,33 @@
   background: transparent;
   border: 1px solid #ddd;
 }
+
+/* --- Thanh tìm kiếm đơn hàng --- */
+.order-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.order-search-bar input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.search-btn {
+  background-color: #81c784;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background-color: #66bb6a;
+}

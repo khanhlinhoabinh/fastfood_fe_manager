@@ -6,22 +6,32 @@ import "./OrderSection.css";
 const OrderSection = () => {
   const [orders, setOrders] = useState([]);
   const [selectedFunction, setSelectedFunction] = useState("list");
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
   // sorting
-  const [sortField, setSortField] = useState("orderDate"); // orderDate or totalAmount
+  const [sortField, setSortField] = useState("orderDate");
   const [sortDir, setSortDir] = useState("desc");
+
+  // search
+  const [searchTerm, setSearchTerm] = useState("");
 
   // form modal state
   const [showForm, setShowForm] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
 
+  // ===========================
+  // Fetch Orders (with search)
+  // ===========================
   const fetchOrders = () => {
-    // build query params; backend expected: ?page=X&size=Y&sort=field,dir
-    const url = `http://localhost:8080/api/orders?page=${currentPage}&size=${pageSize}&sort=${sortField},${sortDir}`;
-    setOrders([]); // clear while loading
+    let url = `http://localhost:8080/api/orders/paged?page=${currentPage}&size=${pageSize}&sort=${sortField},${sortDir}`;
+
+    if (searchTerm.trim() !== "") {
+      url += `&keyword=${encodeURIComponent(searchTerm.trim())}`;
+    }
+
+    setOrders([]);
     axios
       .get(url)
       .then((res) => {
@@ -58,7 +68,6 @@ const OrderSection = () => {
       .delete(`http://localhost:8080/api/orders/${orderId}`)
       .then(() => {
         alert("Xóa thành công");
-        // reload current page
         fetchOrders();
       })
       .catch((err) => {
@@ -83,17 +92,33 @@ const OrderSection = () => {
     fetchOrders();
   };
 
+  // ===========================
+  // Search Handlers
+  // ===========================
+  const handleSearch = () => {
+    setCurrentPage(0);
+    fetchOrders();
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  // ===========================
+  // UI Rendering
+  // ===========================
   return (
     <div className="order-container">
       <h1 className="order-title">🧾 Danh sách Đơn hàng</h1>
 
+      {/* Bộ điều khiển */}
       <div className="order-controls">
         <div className="left-controls">
           <button
             className="btn"
-            onClick={() => {
-              setSelectedFunction("list");
-            }}
+            onClick={() => setSelectedFunction("list")}
           >
             Danh sách đơn hàng
           </button>
@@ -127,6 +152,21 @@ const OrderSection = () => {
         </div>
       </div>
 
+      {/* --- Thanh tìm kiếm --- */}
+      <div className="order-search-bar">
+        <input
+          type="text"
+          placeholder="🔍 Nhập từ khóa (Mã KH, trạng thái, ghi chú...)"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyPress}
+        />
+        <button className="btn search-btn" onClick={handleSearch}>
+          Tìm kiếm
+        </button>
+      </div>
+
+      {/* --- Bảng dữ liệu --- */}
       <div className="order-table-section">
         <table className="order-table">
           <thead>
@@ -173,7 +213,7 @@ const OrderSection = () => {
           </tbody>
         </table>
 
-        {/* phân trang */}
+        {/* --- Phân trang --- */}
         <div className="pagination">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -201,6 +241,7 @@ const OrderSection = () => {
         </div>
       </div>
 
+      {/* --- Form thêm/sửa --- */}
       {showForm && (
         <OrderForm
           order={editingOrder}
