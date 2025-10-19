@@ -5,6 +5,7 @@
   font-family: "Segoe UI", sans-serif;
 }
 
+/* Tiêu đề */
 .menu-title {
   text-align: center;
   font-size: 28px;
@@ -12,6 +13,7 @@
   margin-bottom: 25px;
 }
 
+/* Nút chức năng chính */
 .menu-function-buttons {
   display: flex;
   justify-content: center;
@@ -35,12 +37,50 @@
   color: white;
 }
 
+/* Tiêu đề danh sách */
 .menu-table-section h2 {
   text-align: center;
   color: #444;
   margin-bottom: 15px;
 }
 
+/* Thanh tìm kiếm */
+.menu-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.menu-search input {
+  padding: 8px 12px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.menu-search input:focus {
+  border-color: #ff9800;
+  box-shadow: 0 0 5px rgba(255, 152, 0, 0.4);
+}
+
+.menu-search button {
+  padding: 8px 14px;
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.menu-search button:hover {
+  background-color: #e65100;
+}
+
+/* Bảng */
 .menu-table {
   width: 100%;
   border-collapse: collapse;
@@ -62,11 +102,28 @@
   background-color: #fff3e0;
 }
 
+/* Nút xoá */
+.delete-btn {
+  background-color: #e57373;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+/* Khi không có dữ liệu */
 .no-data {
   text-align: center;
   color: #999;
   padding: 20px;
 }
+
 /* ✅ PHÂN TRANG */
 .pagination {
   display: flex;
