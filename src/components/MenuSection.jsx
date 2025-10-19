@@ -5,14 +5,34 @@ import axios from "axios";
 const MenuSection = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [selectedFunction, setSelectedFunction] = useState("list");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pageSize] = useState(5); // Số món mỗi trang
 
-  // Gọi API lấy danh sách món ăn
+  // ✅ Hàm chuyển trang
+  const handlePageChange = (page) => {
+    if (page >= 0 && page < totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  // ✅ Gọi API lấy danh sách món ăn có phân trang
   useEffect(() => {
+    setMenuItems([]); // clear dữ liệu cũ trước khi load trang mới
+
     axios
-      .get("http://localhost:8080/api/menuitems")
-      .then((res) => setMenuItems(res.data))
+      .get(`http://localhost:8080/api/menuitems?page=${currentPage}&size=${pageSize}`)
+      .then((res) => {
+        if (res.data && res.data.content) {
+          setMenuItems(res.data.content);
+          setTotalPages(res.data.totalPages);
+        } else {
+          setMenuItems(res.data);
+          setTotalPages(1);
+        }
+      })
       .catch((err) => console.error("Lỗi khi lấy menu:", err));
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="menu-container">
@@ -70,6 +90,32 @@ const MenuSection = () => {
               )}
             </tbody>
           </table>
+          {/* ✅ PHÂN TRANG */}
+          <div className="pagination">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 0}
+            >
+              ⬅ Trước
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={index === currentPage ? "active-page" : ""}
+                onClick={() => handlePageChange(index)}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages - 1}
+            >
+              Sau ➡
+            </button>
+          </div>
         </div>
       )}
     </div>

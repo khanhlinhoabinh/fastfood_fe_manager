@@ -7,7 +7,7 @@ export default function HomeSection() {
 
   const menus = [
     { name: "Thực Đơn", img: "/src/assets/thucdon.png", path: "/menu" },
-    { name: "Khách Hàng", img: "/src/assets/khachhang.png" },
+    { name: "Khách Hàng", img: "/src/assets/khachhang.png", path: "/customers" },
     { name: "Đơn Hàng", img: "/src/assets/donhang.png" },
     { name: "Chi tiết đơn hàng", img: "/src/assets/chitietdonhang.png" },
     { name: "Thanh Toán", img: "/src/assets/thanhToan.png" },

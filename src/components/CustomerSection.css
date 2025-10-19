@@ -1,65 +1,65 @@
-.menu-container {
+.customer-container {
   padding: 30px;
   background-color: #fff8ef;
   min-height: 100vh;
   font-family: "Segoe UI", sans-serif;
 }
 
-.menu-title {
+.customer-title {
   text-align: center;
   font-size: 28px;
-  color: #d32f2f;
+  color: #1976d2;
   margin-bottom: 25px;
 }
 
-.menu-function-buttons {
+.customer-function-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
 }
 
-.menu-function-buttons button {
+.customer-function-buttons button {
   padding: 10px 20px;
-  background-color: #f6d365;
-  border: 1px solid #d3a625;
+  background-color: #a5d6a7;
+  border: 1px solid #388e3c;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.menu-function-buttons button.active,
-.menu-function-buttons button:hover {
-  background-color: #ff9800;
+.customer-function-buttons button.active,
+.customer-function-buttons button:hover {
+  background-color: #43a047;
   color: white;
 }
 
-.menu-table-section h2 {
+.customer-table-section h2 {
   text-align: center;
   color: #444;
   margin-bottom: 15px;
 }
 
-.menu-table {
+.customer-table {
   width: 100%;
   border-collapse: collapse;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
-.menu-table th,
-.menu-table td {
+.customer-table th,
+.customer-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: center;
 }
 
-.menu-table th {
-  background-color: #ffcc80;
+.customer-table th {
+  background-color: #c8e6c9;
 }
 
-.menu-table tr:nth-child(even) {
-  background-color: #fff3e0;
+.customer-table tr:nth-child(even) {
+  background-color: #f1f8e9;
 }
 
 .no-data {
@@ -71,33 +71,31 @@
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-top: 20px;
   gap: 8px;
 }
 
 .pagination button {
   padding: 8px 14px;
-  background-color: #ffb74d;
-  border: none;
-  border-radius: 6px;
+  border: 1px solid #1976d2;
+  background-color: white;
   cursor: pointer;
-  transition: 0.3s;
-  font-weight: 500;
+  border-radius: 6px;
+  transition: 0.2s;
 }
 
-.pagination button:hover:not(:disabled) {
-  background-color: #f57c00;
+.pagination button:hover {
+  background-color: #1976d2;
   color: white;
+}
+
+.pagination button.active-page {
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
 }
 
 .pagination button:disabled {
-  background-color: #ffe0b2;
+  opacity: 0.5;
   cursor: not-allowed;
-}
-
-.pagination .active-page {
-  background-color: #e65100;
-  color: white;
-  font-weight: bold;
 }
