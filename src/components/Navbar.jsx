@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -7,15 +8,16 @@ export default function Navbar() {
       <div className="navbar-logo">
         <img src="/src/assets/logo.png" alt="logo" />
       </div>
+
       <ul className="navbar-menu">
-        <li>Trang Chủ</li>
-        <li>Món Ăn</li>
-        <li>Khách Hàng</li>
-        <li>Đơn Hàng</li>
-        <li>Chi Tiết Đơn</li>
-        <li>Thanh Toán</li>
-        <li>Nhân Viên</li>
-        <li>Khuyến Mãi</li>
+        <li><Link to="/">Trang Chủ</Link></li>
+        <li><Link to="/menu">Món Ăn</Link></li>
+        <li><Link to="/customers">Khách Hàng</Link></li>
+        <li><Link to="/orders">Đơn Hàng</Link></li>
+        <li><Link to="/order-details">Chi Tiết Đơn</Link></li>
+        <li><Link to="/payments">Thanh Toán</Link></li>
+        <li><Link to="/employees">Nhân Viên</Link></li>
+        <li><Link to="/promotions">Khuyến Mãi</Link></li>
       </ul>
     </nav>
   );
