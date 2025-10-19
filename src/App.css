@@ -1,15 +1,14 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #fff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
 }
 
-.banner img {
-  width: 100%;
-  height: auto;
-  border: 3px solid #f1f1f1;
+button {
+  cursor: pointer;
 }
 
-.app-container {
-  text-align: center;
+a {
+  text-decoration: none;
+  color: inherit;
 }
