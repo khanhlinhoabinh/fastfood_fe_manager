@@ -1,0 +1,172 @@
+/* MenuCustomer.css - Đã tối ưu hóa cho độ tương phản và dễ nhìn */
+
+/* Container và Tiêu đề */
+.menu-container {
+    padding: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fcfcfc; /* Nền trắng sạch */
+}
+
+.menu-title {
+    text-align: center;
+    color: #8C4B4B; /* Màu tiêu đề đỏ nâu ấm */
+    margin-bottom: 30px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+/* Nút chức năng (Giữ nguyên) */
+.menu-function-buttons {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.menu-function-buttons button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px; /* Bo góc mềm mại hơn */
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Nút không được chọn */
+.menu-function-buttons button:not(.active) {
+    background-color: #F8E3A9; /* Màu vàng cam nhạt */
+    color: #4C3C24;
+}
+
+.menu-function-buttons button:not(.active):hover {
+    background-color: #F8D98C; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Nút Danh sách (Active) */
+.menu-function-buttons button.active {
+    background-color: #FF8C00; /* Màu cam đậm */
+    color: white; /* ✅ SỬA: Dùng màu trắng cho chữ để tăng tương phản với nền cam */
+    border: 2px solid #FF8C00;
+    box-shadow: 0 4px 6px rgba(255, 140, 0, 0.4);
+}
+
+/* Bảng dữ liệu */
+.menu-table-section {
+    max-width: 100%;
+    overflow-x: auto;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Bóng nhẹ cho phần bảng */
+}
+
+.menu-table-section h2 {
+    color: #4C3C24; /* Tiêu đề bảng màu nâu đậm */
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.menu-table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0;
+}
+
+.menu-table th, .menu-table td {
+    border: none; /* Bỏ border ô */
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0; /* ✅ SỬA: Đường kẻ dưới nhẹ và rõ hơn */
+    color: #333; /* ✅ THÊM: Màu chữ mặc định cho dữ liệu là màu đen đậm dễ đọc */
+}
+
+.menu-table th {
+    background-color: #FFC069; /* ✅ SỬA: Màu header cam nhạt hơn, tăng độ tương phản với nền hàng */
+    color: #333; /* Màu chữ tiêu đề đen đậm */
+    font-weight: 700; /* Tăng độ đậm */
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+/* Bo góc cho hàng header */
+.menu-table thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+.menu-table thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.menu-table tr:nth-child(even) {
+    background-color: #f8f8f8; /* ✅ SỬA: Hàng chẵn màu xám rất nhạt để phân biệt rõ hơn */
+}
+
+.menu-table tr:hover {
+    background-color: #fff3e0; /* ✅ SỬA: Hiệu ứng hover màu cam/kem nổi bật hơn */
+}
+
+/* ------------------------------------- */
+/* TÙY CHỈNH NỔI BẬT CÁC CỘT DỮ LIỆU */
+/* ------------------------------------- */
+
+/* Cột Điểm tích lũy (Giả định là cột thứ 5) */
+.menu-table td:nth-child(5) {
+    font-weight: 700;
+    color: #12824A; /* Màu xanh lá đậm nổi bật cho điểm số */
+    text-align: center;
+}
+
+/* Cột Hạng thành viên (Giả định là cột thứ 6) */
+.menu-table td:nth-child(6) {
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Styling cụ thể cho từng hạng thành viên */
+
+/* VIP */
+.menu-table tr:has(td:nth-child(6):contains("VIP")) td:nth-child(6) {
+    background-color: #ffd70030; /* Nền vàng kim nhạt */
+    color: #8a6d3b; /* Chữ nâu/vàng đậm */
+    border-radius: 4px;
+}
+
+/* Thân thiết */
+.menu-table tr:has(td:nth-child(6):contains("Thân thiết")) td:nth-child(6) {
+    background-color: #d4edda; /* Nền xanh lá nhạt */
+    color: #155724; /* Chữ xanh lá đậm */
+    border-radius: 4px;
+}
+
+/* Vãng lai */
+.menu-table tr:has(td:nth-child(6):contains("Vãng lai")) td:nth-child(6) {
+    background-color: #f1f1f1; /* Nền xám nhạt */
+    color: #6c757d; /* Chữ xám trung tính */
+    border-radius: 4px;
+}
+
+/* Nút Xóa (Làm nổi bật) */
+.menu-table button {
+    background-color: #dc3545; /* Màu đỏ tiêu chuẩn */
+    color: white !important;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.menu-table button:hover {
+    background-color: #c82333;
+}
+
+/* Lớp không có dữ liệu */
+.no-data { 
+    text-align: center;
+    font-style: italic;
+    color: #A0A0A0; /* Màu xám trung tính */
+    padding: 20px;
+    border-bottom: none;
+    
+}
