@@ -156,7 +156,7 @@ const OrderSection = () => {
       <div className="order-search-bar">
         <input
           type="text"
-          placeholder="🔍 Nhập từ khóa (Mã KH, trạng thái, ghi chú...)"
+          placeholder="🔍 Nhập từ khóa (Mã KH, trạng thái, Mã NV...)"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyPress}
@@ -176,27 +176,27 @@ const OrderSection = () => {
               <th>Ngày giờ</th>
               <th>Tổng tiền (₫)</th>
               <th>Trạng thái</th>
-              <th>Ghi chú</th>
+              <th>Mã NV</th>
               <th>Hành động</th>
             </tr>
           </thead>
           <tbody>
             {orders.length > 0 ? (
               orders.map((o) => (
-                <tr key={o.id}>
-                  <td>{o.id}</td>
-                  <td>{o.customerCode || o.customerId}</td>
+                <tr key={o.orderID}>
+                  <td>{o.orderID}</td>
+                  <td>{o.customerID}</td>
                   <td>{new Date(o.orderDate).toLocaleString()}</td>
                   <td>{Number(o.totalAmount).toLocaleString()}</td>
                   <td>{o.status}</td>
-                  <td>{o.note || "-"}</td>
+                  <td>{o.staffID}</td>
                   <td>
                     <button className="small" onClick={() => openEditForm(o)}>
                       ✏ Sửa
                     </button>
                     <button
                       className="small danger"
-                      onClick={() => handleDelete(o.id)}
+                      onClick={() => handleDelete(o.orderID)}
                     >
                       🗑 Xóa
                     </button>
