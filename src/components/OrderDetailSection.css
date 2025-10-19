@@ -1,0 +1,178 @@
+/* reuse same global font/colors as MenuSection */
+.od-container {
+  padding: 24px;
+  background-color: #fffef7;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.od-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.od-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.od-controls label {
+  font-size: 14px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.od-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
+}
+
+.od-table th,
+.od-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.od-table th {
+  background-color: #ffcc80;
+}
+
+.od-table tr:nth-child(even) {
+  background-color: #fff3e0;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+/* small buttons */
+.small {
+  padding: 6px 8px;
+  font-size: 13px;
+  margin: 0 4px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.small.danger {
+  background-color: #ef9a9a;
+  border: none;
+}
+
+/* pagination similar to menu */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #ffb74d;
+  border: none;
+}
+
+/* modal form style (reuse from previous) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal {
+  background: white;
+  padding: 18px;
+  width: 540px;
+  max-width: calc(100% - 40px);
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.od-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.od-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.od-form input,
+.od-form textarea,
+.od-form select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.od-form textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.btn {
+  background-color: #ffb74d;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn.ghost {
+  background: transparent;
+  border: 1px solid #ddd;
+}
+/* --- Thanh tìm kiếm --- */
+.od-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.od-search-bar input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.search-btn {
+  background-color: #81c784;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
