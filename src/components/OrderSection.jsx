@@ -6,7 +6,7 @@ import "./OrderSection.css";
 const OrderSection = () => {
   const [orders, setOrders] = useState([]);
   const [selectedFunction, setSelectedFunction] = useState("list");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -24,31 +24,16 @@ const OrderSection = () => {
   // ===========================
   // Fetch Orders (with search)
   // ===========================
-  const fetchOrders = () => {
-    let url = `http://localhost:8080/api/orders/paged?page=${currentPage}&size=${pageSize}&sort=${sortField},${sortDir}`;
-
-    if (searchTerm.trim() !== "") {
-      url += `&keyword=${encodeURIComponent(searchTerm.trim())}`;
+  const fetchOrders = async () => {
+    try {
+      const url = `http://localhost:8080/api/orders/paged?page=${currentPage}&size=${pageSize}&keyword=${encodeURIComponent(searchTerm)}`;
+      const res = await axios.get(url);
+      setOrders(res.data.content || []);
+      setTotalPages(res.data.totalPages || 1);
+    } catch (err) {
+      console.error("Lỗi khi lấy danh sách đơn hàng:", err);
+      setOrders([]);
     }
-
-    setOrders([]);
-    axios
-      .get(url)
-      .then((res) => {
-        if (res.data && res.data.content) {
-          setOrders(res.data.content);
-          setTotalPages(res.data.totalPages);
-        } else if (Array.isArray(res.data)) {
-          setOrders(res.data);
-          setTotalPages(1);
-        } else {
-          setOrders([]);
-          setTotalPages(1);
-        }
-      })
-      .catch((err) => {
-        console.error("Lỗi khi lấy danh sách đơn hàng:", err);
-      });
   };
 
   useEffect(() => {
@@ -96,8 +81,8 @@ const OrderSection = () => {
   // Search Handlers
   // ===========================
   const handleSearch = () => {
-    setCurrentPage(0);
-    fetchOrders();
+    setCurrentPage(0); // Đặt lại trang về 0 khi tìm kiếm
+    fetchOrders(); // Gọi hàm lấy dữ liệu với từ khóa tìm kiếm
   };
 
   const handleKeyPress = (e) => {
