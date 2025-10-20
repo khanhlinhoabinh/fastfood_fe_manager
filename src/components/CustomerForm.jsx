@@ -96,9 +96,8 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         value={formData.memberType}
         onChange={handleChange}
       >
-        <option value="Thường">Thường</option>
-        <option value="VIP">VIP</option>
-        <option value="Vàng">Vàng</option>
+        <option value="Thân Thiết">Thân Thiết</option>
+        <option value="Vãng Lai">Vãng Lai</option>
       </select>
 
       <div className="form-buttons">
