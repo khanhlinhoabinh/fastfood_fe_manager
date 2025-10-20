@@ -100,7 +100,7 @@ const CustomerSection = () => {
     setEditingCustomer(null);
   }}
 >
-  ➕ Thêm khách hàng mới
+   Thêm khách hàng mới
 </button>
 
 
