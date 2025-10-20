@@ -1,0 +1,204 @@
+/* OrderSection.css */
+.order-container {
+  padding: 30px;
+  background-color: #fff8ef;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.order-title {
+  text-align: center;
+  font-size: 26px;
+  color: #2e7d32;
+  margin-bottom: 18px;
+}
+
+.order-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.left-controls .btn,
+.right-controls .btn {
+  padding: 8px 14px;
+  background-color: #f6d365;
+  border: 1px solid #d3a625;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.right-controls label {
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
+}
+
+.order-table th,
+.order-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.order-table th {
+  background-color: #ffcc80;
+}
+
+.order-table tr:nth-child(even) {
+  background-color: #fff3e0;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+.small {
+  padding: 6px 8px;
+  font-size: 13px;
+  margin: 0 4px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.small.danger {
+  background-color: #ef9a9a;
+  border: none;
+}
+
+.small:hover {
+  filter: brightness(0.95);
+}
+
+/* pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  background-color: #ffb74d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pagination .active-page {
+  background-color: #e65100;
+  color: white;
+  font-weight: bold;
+}
+
+/* modal form */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal {
+  background: white;
+  padding: 18px;
+  width: 520px;
+  max-width: calc(100% - 40px);
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.order-form input,
+.order-form textarea,
+.order-form select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.order-form textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.btn {
+  background-color: #ffb74d;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid #ddd;
+}
+
+/* --- Thanh tìm kiếm đơn hàng --- */
+.order-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.order-search-bar input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.search-btn {
+  background-color: #81c784;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background-color: #66bb6a;
+}

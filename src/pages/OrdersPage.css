@@ -1,0 +1,11 @@
+.orders-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #fffdf7;
+  min-height: 100vh;
+}
+
+.orders-content {
+  flex: 1;
+  padding-top: 70px;
+}
