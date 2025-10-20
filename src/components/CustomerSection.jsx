@@ -74,6 +74,12 @@ const CustomerSection = () => {
       alert("Không thể xóa khách hàng. Vui lòng thử lại!");
     }
   };
+  // ✅ Hàm sửa khách hàng
+  const handleEdit = (customer) => {
+    setEditingCustomer(customer);
+    setSelectedFunction("edit");
+    setShowForm(true);
+  };
 
   return (
     <div className="customer-container">
@@ -143,6 +149,12 @@ const CustomerSection = () => {
                       <td>{c.memberType}</td>
                       <td>
                         <button
+                          className="edit-button"
+                          onClick={() => handleEdit(c)}
+                        >
+                          ✏️ Sửa
+                        </button>
+                        <button
                           className="delete-button"
                           onClick={() => handleDelete(c.customerID)}
                         >
@@ -192,7 +204,7 @@ const CustomerSection = () => {
           </div>
         </>
       )}
-      {selectedFunction === "add" && showForm && (
+      {(selectedFunction === "add" || selectedFunction === "edit") && showForm && (
   <CustomerForm
     customer={editingCustomer}
     onSave={() => {
