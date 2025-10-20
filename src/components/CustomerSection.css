@@ -145,3 +145,41 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin: 20px auto;
+  background: #fff3e0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.customer-form input,
+.customer-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.customer-form button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #ff9800;
+  color: white;
+  font-weight: bold;
+}
+
+.customer-form button:hover {
+  background: #f57c00;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./CustomerSection.css";
 import axios from "axios";
+import CustomerForm from "./CustomerForm";
+
 
 const CustomerSection = () => {
   const [customers, setCustomers] = useState([]);
@@ -8,6 +10,8 @@ const CustomerSection = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [showForm, setShowForm] = useState(false);           // ✅ thêm
+  const [editingCustomer, setEditingCustomer] = useState(null);
   const pageSize = 5;
 
   // ✅ Hàm đổi trang
@@ -83,13 +87,17 @@ const CustomerSection = () => {
           Danh sách khách hàng
         </button>
         <button
-          className={selectedFunction === "add" ? "active" : ""}
-          onClick={() =>
-            alert("Chức năng thêm khách hàng đang được phát triển...")
-          }
-        >
-          ➕ Thêm khách hàng mới
-        </button>
+  className={selectedFunction === "add" ? "active" : ""}
+  onClick={() => {
+    setSelectedFunction("add"); // ✅ chuyển chế độ sang form
+    setShowForm(true);
+    setEditingCustomer(null);
+  }}
+>
+  ➕ Thêm khách hàng mới
+</button>
+
+
       </div>
 
       {selectedFunction === "list" && (
@@ -184,6 +192,22 @@ const CustomerSection = () => {
           </div>
         </>
       )}
+      {selectedFunction === "add" && showForm && (
+  <CustomerForm
+    customer={editingCustomer}
+    onSave={() => {
+      setShowForm(false);
+      setEditingCustomer(null);
+      setSelectedFunction("list"); // ✅ quay lại danh sách sau khi lưu
+      fetchCustomers(searchKeyword.trim(), currentPage);
+    }}
+    onCancel={() => {
+      setShowForm(false);
+      setEditingCustomer(null);
+      setSelectedFunction("list"); // ✅ quay lại danh sách nếu hủy
+    }}
+  />
+)}
     </div>
   );
 };
