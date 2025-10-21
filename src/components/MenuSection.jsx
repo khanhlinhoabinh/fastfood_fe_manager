@@ -8,6 +8,10 @@ const MenuSection = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const [showSortOptions, setShowSortOptions] = useState(false);
+
   const pageSize = 5;
 
   // ✅ Hàm đổi trang
@@ -19,31 +23,37 @@ const MenuSection = () => {
   };
 
   // ✅ Hàm lấy danh sách món ăn (phân trang + tìm kiếm)
-  const fetchMenuItems = async (keyword = "", page = 0) => {
+  
+const fetchMenuItems = async (keyword = "", page = 0) => {
     try {
-      const url = keyword.trim()
-        ? `http://localhost:8080/api/menuitems/search?keyword=${keyword}`
-        : `http://localhost:8080/api/menuitems/page?page=${page}&size=${pageSize}`;
+      let url = "";
+
+      if (sortField && sortOrder) {
+        url = `http://localhost:8080/api/menuitems/sort?field=${sortField}&order=${sortOrder}`;
+      } else {
+        url = keyword.trim()
+          ? `http://localhost:8080/api/menuitems/search?keyword=${keyword}`
+          : `http://localhost:8080/api/menuitems/page?page=${page}&size=${pageSize}`;
+      }
 
       const res = await axios.get(url);
       const data = res.data;
 
-      if (keyword.trim()) {
-        // Khi tìm kiếm → trả về mảng thường
-        setMenuItems(Array.isArray(data) ? data : []);
-        setTotalPages(1);
-        setCurrentPage(0);
-      } else {
-        // Khi xem danh sách phân trang
-        setMenuItems(Array.isArray(data.content) ? data.content : []);
-        setTotalPages(data.totalPages || 1);
-        setCurrentPage(page);
-      }
+      const items = sortField && sortOrder
+        ? Array.isArray(data) ? data : []
+        : keyword.trim()
+          ? Array.isArray(data) ? data : []
+          : Array.isArray(data.content) ? data.content : [];
+
+      setMenuItems(items);
+      setTotalPages(sortField && sortOrder || keyword.trim() ? 1 : data.totalPages || 1);
+      setCurrentPage(sortField && sortOrder || keyword.trim() ? 0 : page);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách món ăn:", err);
       setMenuItems([]);
     }
   };
+
 
   useEffect(() => {
     fetchMenuItems();
@@ -70,6 +80,11 @@ const MenuSection = () => {
       alert("Không thể xóa món ăn. Vui lòng thử lại!");
     }
   };
+  
+  const handleSortChange = () => {
+    fetchMenuItems(searchKeyword.trim(), 0);
+  };
+
 
   return (
     <div className="menu-container">
@@ -92,7 +107,8 @@ const MenuSection = () => {
 
       {selectedFunction === "list" && (
         <>
-          {/* ✅ Thanh tìm kiếm */}
+          
+{/* ✅ Thanh tìm kiếm + sắp xếp */}
           <div className="search-section">
             <input
               type="text"
@@ -104,7 +120,37 @@ const MenuSection = () => {
             <button onClick={handleSearch} className="search-button">
               Tìm kiếm
             </button>
+
+            <button
+              className="sort-icon-button"
+              onClick={() => setShowSortOptions(!showSortOptions)}
+            >
+              ⚙️ Sắp xếp
+            </button>
+
+            {showSortOptions && (
+              <div className="sort-options">
+                <select
+                  value={sortField}
+                  onChange={(e) => setSortField(e.target.value)}
+                >
+                  <option value="">-- Chọn tiêu chí --</option>
+                  <option value="name">Tên món</option>
+                  <option value="price">Giá</option>
+                </select>
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                >
+                  <option value="">-- Chọn thứ tự --</option>
+                  <option value="asc">Tăng dần</option>
+                  <option value="desc">Giảm dần</option>
+                </select>
+                <button onClick={handleSortChange}>Áp dụng</button>
+              </div>
+            )}
           </div>
+
 
           {/* ✅ Bảng danh sách món ăn */}
           <div className="menu-table-section">
