@@ -9,6 +9,7 @@ const OrderSection = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [showSortOptions, setShowSortOptions] = useState(false);
 
   // sorting
   const [sortField, setSortField] = useState("orderDate");
@@ -112,44 +113,49 @@ const OrderSection = () => {
           </button>
         </div>
 
-        <div className="right-controls">
-          <label>
-            Sắp xếp theo:
-            <select
-              value={sortField}
-              onChange={(e) => setSortField(e.target.value)}
-            >
-              <option value="orderDate">Ngày đặt</option>
-              <option value="totalAmount">Tổng tiền</option>
-            </select>
-          </label>
-
-          <label>
-            Hướng:
-            <select
-              value={sortDir}
-              onChange={(e) => setSortDir(e.target.value)}
-            >
-              <option value="desc">Giảm dần</option>
-              <option value="asc">Tăng dần</option>
-            </select>
-          </label>
-        </div>
+        
       </div>
 
-      {/* --- Thanh tìm kiếm --- */}
-      <div className="order-search-bar">
-        <input
-          type="text"
-          placeholder="🔍 Nhập từ khóa (Mã KH, trạng thái, Mã NV...)"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={handleKeyPress}
-        />
-        <button className="btn search-btn" onClick={handleSearch}>
-          Tìm kiếm
-        </button>
-      </div>
+      {/* 🔍 Thanh tìm kiếm + ⚙️ Sắp xếp */}
+<div className="search-section">
+  <input
+    type="text"
+    placeholder="🔍 Nhập từ khóa (Mã KH, trạng thái, Mã NV...)"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    onKeyDown={handleKeyPress}
+    className="search-input"
+  />
+  <button className="search-button" onClick={handleSearch}>
+    Tìm kiếm
+  </button>
+  <button
+    className="sort-icon-button"
+    onClick={() => setShowSortOptions(!showSortOptions)}
+  >
+    ⚙️ Sắp xếp
+  </button>
+
+  {showSortOptions && (
+    <div className="sort-options">
+      <select
+        value={sortField}
+        onChange={(e) => setSortField(e.target.value)}
+      >
+        <option value="orderDate">Ngày đặt</option>
+        <option value="totalAmount">Tổng tiền</option>
+      </select>
+      <select
+        value={sortDir}
+        onChange={(e) => setSortDir(e.target.value)}
+      >
+        <option value="desc">Giảm dần</option>
+        <option value="asc">Tăng dần</option>
+      </select>
+      <button onClick={fetchOrders}>Áp dụng</button>
+    </div>
+  )}
+</div>
 
       {/* --- Bảng dữ liệu --- */}
       <div className="order-table-section">
