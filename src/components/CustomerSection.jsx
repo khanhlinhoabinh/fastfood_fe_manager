@@ -12,6 +12,10 @@ const CustomerSection = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [showForm, setShowForm] = useState(false);           // ✅ thêm
   const [editingCustomer, setEditingCustomer] = useState(null);
+  const [sortField, setSortField] = useState(""); // ✅ tiêu chí sắp xếp
+  const [sortOrder, setSortOrder] = useState(""); // ✅ thứ tự sắp xếp
+  const [showSortOptions, setShowSortOptions] = useState(false); // ✅ toggle dropdown
+
   const pageSize = 5;
 
   // ✅ Hàm đổi trang
@@ -23,31 +27,44 @@ const CustomerSection = () => {
   };
 
   // ✅ Hàm lấy danh sách khách hàng (có phân trang + tìm kiếm)
-  const fetchCustomers = async (keyword = "", page = 0) => {
+  
+const fetchCustomers = async (keyword = "", page = 0) => {
     try {
       const url = keyword.trim()
         ? `http://localhost:8080/api/customers/search?keyword=${keyword}`
         : `http://localhost:8080/api/customers/page?page=${page}&size=${pageSize}`;
 
       const res = await axios.get(url);
-      const data = res.data;
+      let data = res.data;
 
-      if (keyword.trim()) {
-        // Khi tìm kiếm, trả về toàn bộ danh sách không phân trang
-        setCustomers(Array.isArray(data) ? data : []);
-        setTotalPages(1);
-        setCurrentPage(0);
-      } else {
-        // Khi xem danh sách, backend trả về dạng phân trang
-        setCustomers(Array.isArray(data.content) ? data.content : []);
-        setTotalPages(data.totalPages || 1);
-        setCurrentPage(page);
+      let customerList = keyword.trim()
+        ? Array.isArray(data) ? data : []
+        : Array.isArray(data.content) ? data.content : [];
+
+      // ✅ Áp dụng sắp xếp nếu có lựa chọn
+      if (sortField && sortOrder) {
+        customerList.sort((a, b) => {
+          let valA = a[sortField];
+          let valB = b[sortField];
+
+          if (typeof valA === "string") valA = valA.toLowerCase();
+          if (typeof valB === "string") valB = valB.toLowerCase();
+
+          if (valA < valB) return sortOrder === "asc" ? -1 : 1;
+          if (valA > valB) return sortOrder === "asc" ? 1 : -1;
+          return 0;
+        });
       }
+
+      setCustomers(customerList);
+      setTotalPages(keyword.trim() ? 1 : data.totalPages || 1);
+      setCurrentPage(keyword.trim() ? 0 : page);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách khách hàng:", err);
       setCustomers([]);
     }
   };
+
 
   useEffect(() => {
     fetchCustomers();
@@ -80,6 +97,11 @@ const CustomerSection = () => {
     setSelectedFunction("edit");
     setShowForm(true);
   };
+  
+const handleSortChange = () => {
+    fetchCustomers(searchKeyword.trim(), 0);
+  };
+
 
   return (
     <div className="customer-container">
@@ -108,7 +130,8 @@ const CustomerSection = () => {
 
       {selectedFunction === "list" && (
         <>
-          {/* ✅ Thanh tìm kiếm */}
+          
+{/* ✅ Thanh tìm kiếm + sắp xếp */}
           <div className="search-section">
             <input
               type="text"
@@ -120,7 +143,38 @@ const CustomerSection = () => {
             <button onClick={handleSearch} className="search-button">
               Tìm kiếm
             </button>
+
+            {/* ✅ Icon sắp xếp */}
+            <button
+              className="sort-icon-button"
+              onClick={() => setShowSortOptions(!showSortOptions)}
+            >
+              ⚙️ Sắp xếp
+            </button>
+
+            {showSortOptions && (
+              <div className="sort-options">
+                <select
+                  value={sortField}
+                  onChange={(e) => setSortField(e.target.value)}
+                >
+                  <option value="">-- Chọn tiêu chí --</option>
+                  <option value="name">Tên</option>
+                  <option value="loyaltyPoints">Điểm tích lũy</option>
+                </select>
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                >
+                  <option value="">-- Chọn thứ tự --</option>
+                  <option value="asc">Tăng dần</option>
+                  <option value="desc">Giảm dần</option>
+                </select>
+                <button onClick={handleSortChange}>Áp dụng</button>
+              </div>
+            )}
           </div>
+
 
           {/* ✅ Bảng khách hàng */}
           <div className="customer-table-section">
