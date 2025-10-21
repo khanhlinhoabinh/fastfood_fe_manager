@@ -1,8 +1,6 @@
-// src/components/CustomerForm.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./CustomerSection.css";
-
 
 const CustomerForm = ({ customer, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -13,7 +11,6 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
     memberType: "Thường",
   });
 
-  // Khi nhận props customer (để sửa), load dữ liệu vào form
   useEffect(() => {
     if (customer) {
       setFormData(customer);
@@ -22,13 +19,15 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "loyaltyPoints" ? Number(value) : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra dữ liệu cơ bản
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
       alert("Vui lòng điền đầy đủ thông tin!");
       return;
@@ -36,14 +35,12 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
 
     try {
       if (customer) {
-        // Cập nhật khách hàng
         await axios.put(
           `http://localhost:8080/api/customers/${customer.customerID}`,
           formData
         );
         alert("✅ Cập nhật khách hàng thành công!");
       } else {
-        // Thêm mới khách hàng
         await axios.post("http://localhost:8080/api/customers", formData);
         alert("✅ Thêm khách hàng mới thành công!");
       }
@@ -59,6 +56,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
     <form onSubmit={handleSubmit} className="customer-form">
       <h3>{customer ? "✏️ Sửa khách hàng" : "➕ Thêm khách hàng mới"}</h3>
 
+      <label>Tên khách hàng</label>
       <input
         name="name"
         value={formData.name}
@@ -67,6 +65,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         required
       />
 
+      <label>Số điện thoại</label>
       <input
         name="phone"
         value={formData.phone}
@@ -75,6 +74,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         required
       />
 
+      <label>Email</label>
       <input
         name="email"
         value={formData.email}
@@ -83,6 +83,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         required
       />
 
+      <label>Điểm tích lũy</label>
       <input
         name="loyaltyPoints"
         type="number"
@@ -91,6 +92,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         placeholder="Điểm tích lũy"
       />
 
+      <label>Loại thành viên</label>
       <select
         name="memberType"
         value={formData.memberType}
