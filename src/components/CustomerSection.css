@@ -182,4 +182,50 @@
   display: flex;
   justify-content: space-between;
 }
+/* ✅ Nút icon sắp xếp */
+.sort-icon-button {
+  background-color: #ffcc80;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.sort-icon-button:hover {
+  background-color: #ffa726;
+  color: white;
+}
+
+/* ✅ Dropdown sắp xếp */
+.sort-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sort-options select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.sort-options button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sort-options button:hover {
+  background-color: #388e3c;
+}
 
