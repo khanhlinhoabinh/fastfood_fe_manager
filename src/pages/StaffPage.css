@@ -1,0 +1,11 @@
+staff-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #fffdf7;
+  min-height: 100vh;
+}
+
+.staff-content {
+  flex: 1;
+  padding-top: 70px;
+}
