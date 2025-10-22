@@ -6,7 +6,7 @@ import CustomerPage from "./pages/CustomerPage"; // trang này bạn sẽ làm s
 import OrderPage from "./pages/OrdersPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
 import StaffPage from "./pages/StaffPage";
-import PaymentSection from "./components/PaymentSection";
+import PaymentPage from "./pages/PaymentPage";
 import "./App.css";
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
         <Route path="/orders" element={<OrderPage />} />
         <Route path="/order-detail" element={<OrderDetailPage/>} />
         <Route path="/employees" element={<StaffPage />} />
+        <Route path="/payments" element={<PaymentPage />} />
       </Routes>
     </Router>
   );
