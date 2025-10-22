@@ -7,6 +7,7 @@ import OrderPage from "./pages/OrdersPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
 import StaffPage from "./pages/StaffPage";
 import PaymentPage from "./pages/PaymentPage";
+import PromotionPage from "./pages/PromotionPage";
 import "./App.css";
 
 function App() {
@@ -17,9 +18,10 @@ function App() {
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/customers" element={<CustomerPage />} />
         <Route path="/orders" element={<OrderPage />} />
-        <Route path="/order-detail" element={<OrderDetailPage/>} />
+        <Route path="/order-detail" element={<OrderDetailPage />} />
         <Route path="/employees" element={<StaffPage />} />
         <Route path="/payments" element={<PaymentPage />} />
+        <Route path="/promotions" element={<PromotionPage />} />
       </Routes>
     </Router>
   );
