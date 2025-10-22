@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import MenuPage from "./pages/MenuPage";
 import CustomerPage from "./pages/CustomerPage"; // trang này bạn sẽ làm sau
 import OrderPage from "./pages/OrdersPage";
+import PaymentSection from "./components/PaymentSection";
 import "./App.css";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/customers" element={<CustomerPage />} />
         <Route path="/orders" element={<OrderPage />} />
+        <Route path="/payments" element={<PaymentSection />} />
       </Routes>
     </Router>
   );
