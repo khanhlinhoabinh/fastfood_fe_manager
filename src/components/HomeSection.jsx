@@ -14,8 +14,8 @@ export default function HomeSection() {
     },
     { name: "Đơn Hàng", img: "/src/assets/donhang.png", path: "/orders" },
     { name: "Chi tiết đơn hàng", img: "/src/assets/chitietdonhang.png" },
-    { name: "Thanh Toán", img: "/src/assets/thanhToan.png" },
     { name: "Nhân Viên", img: "/src/assets/nhanVien.png", path: "/employees" },
+    { name: "Thanh Toán", img: "/src/assets/thanhToan.png", path: "/payments" },
     { name: "Khuyến Mãi", img: "/src/assets/khuyenMai.png" },
   ];
 

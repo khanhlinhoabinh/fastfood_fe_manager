@@ -5,6 +5,7 @@ import MenuPage from "./pages/MenuPage";
 import CustomerPage from "./pages/CustomerPage"; // trang này bạn sẽ làm sau
 import OrderPage from "./pages/OrdersPage";
 import StaffPage from "./pages/StaffPage";
+import PaymentSection from "./components/PaymentSection";
 import "./App.css";
 
 function App() {

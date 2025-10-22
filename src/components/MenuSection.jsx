@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./MenuSection.css";
 import axios from "axios";
+import MenuForm from "./MenuForm";
+
+
 
 const MenuSection = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -11,6 +14,9 @@ const MenuSection = () => {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [showSortOptions, setShowSortOptions] = useState(false);
+  const [showForm, setShowForm] = useState(false); // ✅ Thêm
+  const [editingMenuItem, setEditingMenuItem] = useState(null); // ✅ Thêm
+
 
   const pageSize = 5;
 
@@ -84,6 +90,13 @@ const fetchMenuItems = async (keyword = "", page = 0) => {
   const handleSortChange = () => {
     fetchMenuItems(searchKeyword.trim(), 0);
   };
+  
+const handleEdit = (item) => {
+    setEditingMenuItem(item);
+    setSelectedFunction("edit");
+    setShowForm(true);
+  };
+
 
 
   return (
@@ -97,12 +110,18 @@ const fetchMenuItems = async (keyword = "", page = 0) => {
         >
           Danh sách món ăn
         </button>
-        <button
+        
+<button
           className={selectedFunction === "add" ? "active" : ""}
-          onClick={() => alert("Chức năng thêm món đang phát triển...")}
+          onClick={() => {
+            setSelectedFunction("add");
+            setShowForm(true);
+            setEditingMenuItem(null);
+          }}
         >
           ➕ Thêm món mới
         </button>
+
       </div>
 
       {selectedFunction === "list" && (
@@ -181,6 +200,13 @@ const fetchMenuItems = async (keyword = "", page = 0) => {
                       <td>{item.prepTime}</td>
                       <td>
                         <button
+                          className="edit-button"
+                          onClick={() => handleEdit(item)}
+                        >
+                          ✏️ Sửa
+                        </button>
+
+                        <button
                           className="delete-button"
                           onClick={() => handleDelete(item.menuItemID)}
                         >
@@ -230,8 +256,26 @@ const fetchMenuItems = async (keyword = "", page = 0) => {
           </div>
         </>
       )}
+      
+{(selectedFunction === "add" || selectedFunction === "edit") && showForm && (
+        <MenuForm
+          menuItem={editingMenuItem}
+          onSave={() => {
+            setShowForm(false);
+            setEditingMenuItem(null);
+            setSelectedFunction("list");
+            fetchMenuItems(searchKeyword.trim(), currentPage);
+          }}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingMenuItem(null);
+            setSelectedFunction("list");
+          }}
+        />
+      )}
     </div>
   );
 };
+
 
 export default MenuSection;

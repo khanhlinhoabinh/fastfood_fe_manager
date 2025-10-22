@@ -1,0 +1,11 @@
+.payment-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9ff; /* tông xanh nhẹ, đồng bộ với PaymentSection */
+  min-height: 100vh;
+}
+
+.payment-content {
+  flex: 1;
+  padding-top: 70px; /* tạo khoảng trống cho Navbar cố định */
+}
