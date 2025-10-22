@@ -1,0 +1,11 @@
+.orderdetail-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #fffdf7;
+  min-height: 100vh;
+}
+
+.orderdetail-content {
+  flex: 1;
+  padding-top: 70px; /* tạo khoảng cho Navbar cố định nếu có */
+}

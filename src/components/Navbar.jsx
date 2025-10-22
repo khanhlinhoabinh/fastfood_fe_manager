@@ -14,7 +14,7 @@ export default function Navbar() {
         <li><Link to="/menu">Món Ăn</Link></li>
         <li><Link to="/customers">Khách Hàng</Link></li>
         <li><Link to="/orders">Đơn Hàng</Link></li>
-        <li><Link to="/order-details">Chi Tiết Đơn</Link></li>
+        <li><Link to="/order-detail">Chi Tiết Đơn</Link></li>
         <li><Link to="/payments">Thanh Toán</Link></li>
         <li><Link to="/employees">Nhân Viên</Link></li>
         <li><Link to="/promotions">Khuyến Mãi</Link></li>
