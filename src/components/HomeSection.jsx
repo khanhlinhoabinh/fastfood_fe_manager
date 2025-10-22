@@ -7,12 +7,24 @@ export default function HomeSection() {
 
   const menus = [
     { name: "Thực Đơn", img: "/src/assets/thucdon.png", path: "/menu" },
-    { name: "Khách Hàng",img: "/src/assets/khachhang.png",path: "/customers",},
+    {
+      name: "Khách Hàng",
+      img: "/src/assets/khachhang.png",
+      path: "/customers",
+    },
     { name: "Đơn Hàng", img: "/src/assets/donhang.png", path: "/orders" },
-    { name: "Chi tiết đơn hàng", img: "/src/assets/chitietdonhang.png", path: "/order-detail" },
+    {
+      name: "Chi tiết đơn hàng",
+      img: "/src/assets/chitietdonhang.png",
+      path: "/order-detail",
+    },
     { name: "Nhân Viên", img: "/src/assets/nhanVien.png", path: "/employees" },
     { name: "Thanh Toán", img: "/src/assets/thanhToan.png", path: "/payments" },
-    { name: "Khuyến Mãi", img: "/src/assets/khuyenMai.png" },
+    {
+      name: "Khuyến Mãi",
+      img: "/src/assets/khuyenMai.png",
+      path: "/promotions",
+    },
   ];
 
   const handleClick = (menu) => {
