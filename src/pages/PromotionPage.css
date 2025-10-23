@@ -1,0 +1,11 @@
+.promotion-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #f9fff5;
+  min-height: 100vh;
+}
+
+.promotion-content {
+  flex: 1;
+  padding-top: 70px;
+}

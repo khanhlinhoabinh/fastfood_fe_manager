@@ -1,0 +1,165 @@
+.promotion-container {
+  padding: 30px;
+  background-color: #fff8ef;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Tiêu đề */
+.promotion-title {
+  text-align: center;
+  font-size: 28px;
+  color: #d32f2f;
+  margin-bottom: 25px;
+}
+
+/* Nút chức năng chính */
+.promotion-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.promotion-buttons button {
+  padding: 10px 20px;
+  background-color: #f6d365;
+  border: 1px solid #d3a625;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.promotion-buttons button.active,
+.promotion-buttons button:hover {
+  background-color: #ff9800;
+  color: white;
+}
+
+/* Bảng khuyến mãi */
+.promotion-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.promotion-table th,
+.promotion-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.promotion-table th {
+  background-color: #ffcc80;
+}
+
+.promotion-table tr:nth-child(even) {
+  background-color: #fff3e0;
+}
+
+/* Nút sửa */
+.edit-button {
+  background-color: #64b5f6;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.edit-button:hover {
+  background-color: #1976d2;
+}
+
+/* Nút xóa */
+.delete-button {
+  background-color: #e57373;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-button:hover {
+  background-color: #c62828;
+}
+
+/* Form thêm / sửa khuyến mãi */
+.promotion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin: 20px auto;
+  background: #fff3e0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.promotion-form input,
+.promotion-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.promotion-form button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #ff9800;
+  color: white;
+  font-weight: bold;
+}
+
+.promotion-form button:hover {
+  background: #f57c00;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+/* ✅ Thanh tìm kiếm */
+.promotion-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.promotion-search input {
+  padding: 8px 12px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.promotion-search input:focus {
+  border-color: #ff9800;
+  box-shadow: 0 0 5px rgba(255, 152, 0, 0.4);
+}
+
+.promotion-search button {
+  padding: 8px 14px;
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.promotion-search button:hover {
+  background-color: #e65100;
+}
