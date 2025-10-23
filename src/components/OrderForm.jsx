@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const getLocalDateTime = () => {
+  const now = new Date();
+  const offset = now.getTimezoneOffset(); // phút lệch so với UTC
+  const local = new Date(now.getTime() - offset * 60000);
+  return local.toISOString().slice(0, 16); // yyyy-MM-ddTHH:mm
+};
+
 const OrderForm = ({ order, onClose, onSaved }) => {
   const [form, setForm] = useState({
     customerID: "",
     staffID: "",
-    orderDate: new Date().toISOString().slice(0, 16),
+    orderDate: getLocalDateTime(), // giờ hiện tại
     totalAmount: 0,
     status: "Chưa thanh toán",
   });
   const [saving, setSaving] = useState(false);
 
-  // Nếu có đơn hàng (chỉnh sửa)
   useEffect(() => {
     if (order) {
       const d = order.orderDate ? new Date(order.orderDate) : new Date();
@@ -28,10 +34,11 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         id: order.orderID,
       });
     } else {
+      // Khi mở form thêm mới, tự động cập nhật giờ hiện tại
       setForm({
         customerID: "",
         staffID: "",
-        orderDate: new Date().toISOString().slice(0, 16),
+        orderDate: getLocalDateTime(),
         totalAmount: 0,
         status: "Chưa thanh toán",
       });
@@ -47,38 +54,39 @@ const OrderForm = ({ order, onClose, onSaved }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 🔥 tránh reload
+    e.preventDefault();
 
     const payload = {
       customerID: Number(form.customerID),
       staffID: Number(form.staffID),
-      orderDate: new Date(form.orderDate).toISOString().slice(0, 19), // Đảm bảo định dạng ISO
+      orderDate: new Date(form.orderDate).toISOString().slice(0, 19), // chuẩn ISO
       totalAmount: parseFloat(form.totalAmount),
       status: form.status,
     };
 
     setSaving(true);
     try {
-  let response;
-  if (form.id) {
-    response = await axios.put(`http://localhost:8080/api/orders/${form.id}`, payload);
-  } else {
-    response = await axios.post("http://localhost:8080/api/orders", payload);
-  }
+      let response;
+      if (form.id) {
+        response = await axios.put(`http://localhost:8080/api/orders/${form.id}`, payload);
+      } else {
+        response = await axios.post("http://localhost:8080/api/orders", payload);
+      }
 
-  if (response.status === 200 || response.status === 201) {
-    alert(form.id ? "Cập nhật thành công 🎉" : "Tạo thành công 🎉");
-    onSaved(); // reload danh sách
-  } else {
-    alert("Tạo/Sửa thất bại");
-  }
-} catch (err) {
-  console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
-  alert("Tạo/Sửa thất bại");
-  onCancel(); // đóng form
-} finally {
-  setSaving(false);
-}
+      if (response.status === 200 || response.status === 201) {
+        alert(form.id ? "Cập nhật thành công 🎉" : "Tạo thành công 🎉");
+        onSaved();
+        onClose();
+      } else {
+        alert("Tạo/Sửa thất bại");
+      }
+    } catch (err) {
+      console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
+      alert("Tạo/Sửa thất bại");
+      onClose();
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -134,6 +142,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
             <select name="status" value={form.status} onChange={handleChange}>
               <option value="Đã thanh toán">Đã thanh toán</option>
               <option value="Chưa thanh toán">Chưa thanh toán</option>
+              <option value="Đang xử lý">Đang xử lý</option>
             </select>
           </label>
 
