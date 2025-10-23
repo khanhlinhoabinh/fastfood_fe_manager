@@ -4,54 +4,67 @@ import "./PaymentSection.css";
 
 const PaymentForm = ({ payment, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
-    orderCode: "",
+    orderId: "",
     method: "",
     amount: 0,
-    change: 0,
+    changeAmount: 0,
     paymentDate: "",
   });
 
-  // Khi sửa thì load dữ liệu cũ
   useEffect(() => {
     if (payment) {
-      setFormData(payment);
+      setFormData({
+        orderId: payment.order?.orderID ?? "",
+        method: payment.method ?? "",
+        amount: payment.amount ?? 0,
+        changeAmount: payment.changeAmount ?? 0,
+        paymentDate: payment.paymentDate
+          ? new Date(payment.paymentDate).toISOString().slice(0, 16)
+          : "",
+      });
     }
   }, [payment]);
 
-  // Xử lý thay đổi input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "amount" || name === "change" ? Number(value) : value,
+      [name]:
+        name === "amount" || name === "changeAmount" || name === "orderId"
+          ? Number(value)
+          : value,
     }));
   };
 
-  // Xử lý lưu form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.orderCode.trim() ||
-      !formData.method.trim() ||
-      formData.amount <= 0
-    ) {
-      alert("Vui lòng điền đầy đủ thông tin hợp lệ!");
+    if (!formData.orderId || !formData.method.trim() || formData.amount <= 0) {
+      alert("⚠️ Vui lòng điền đầy đủ thông tin hợp lệ!");
       return;
     }
 
+    const payload = {
+      orderId: formData.orderId,
+      method: formData.method,
+      amount: formData.amount,
+      changeAmount: formData.changeAmount,
+      paymentDate: formData.paymentDate
+        ? new Date(formData.paymentDate).toISOString()
+        : null,
+    };
+
     try {
-      if (payment) {
+      if (payment && payment.paymentID) {
         await axios.put(
           `http://localhost:8080/api/payments/${payment.paymentID}`,
-          formData
+          payload
         );
         alert("✅ Cập nhật thanh toán thành công!");
       } else {
-        await axios.post("http://localhost:8080/api/payments", formData);
+        await axios.post("http://localhost:8080/api/payments", payload);
         alert("✅ Thêm thanh toán mới thành công!");
       }
-
       if (onSave) onSave();
     } catch (err) {
       console.error("❌ Lỗi khi lưu thanh toán:", err);
@@ -63,27 +76,23 @@ const PaymentForm = ({ payment, onSave, onCancel }) => {
     <form onSubmit={handleSubmit} className="payment-form">
       <h3>{payment ? "✏️ Sửa thanh toán" : "➕ Thêm thanh toán mới"}</h3>
 
-      <label>Mã đơn</label>
+      <label>Mã đơn (ID)</label>
       <input
-        name="orderCode"
-        value={formData.orderCode}
+        name="orderId"
+        type="number"
+        value={formData.orderId}
         onChange={handleChange}
-        placeholder="Nhập mã đơn"
+        placeholder="Nhập ID đơn hàng"
         required
       />
 
       <label>Phương thức</label>
-      <select
-        name="method"
-        value={formData.method}
-        onChange={handleChange}
-        required
-      >
+      <select name="method" value={formData.method} onChange={handleChange} required>
         <option value="">-- Chọn phương thức --</option>
-        <option value="Tiền mặt">Tiền mặt</option>
-        <option value="Thẻ">Thẻ</option>
-        <option value="Momo">Momo</option>
-        <option value="ZaloPay">ZaloPay</option>
+        <option value="CASH">Tiền mặt</option>
+        <option value="CARD">Thẻ</option>
+        <option value="MOMO">Momo</option>
+        <option value="ZALOPAY">ZaloPay</option>
       </select>
 
       <label>Số tiền (₫)</label>
@@ -98,9 +107,9 @@ const PaymentForm = ({ payment, onSave, onCancel }) => {
 
       <label>Tiền thừa (₫)</label>
       <input
-        name="change"
+        name="changeAmount"
         type="number"
-        value={formData.change}
+        value={formData.changeAmount}
         onChange={handleChange}
         placeholder="Nhập tiền thừa"
       />
@@ -111,14 +120,11 @@ const PaymentForm = ({ payment, onSave, onCancel }) => {
         type="datetime-local"
         value={formData.paymentDate}
         onChange={handleChange}
-        required
       />
 
       <div className="form-buttons">
         <button type="submit">💾 Lưu</button>
-        <button type="button" onClick={onCancel}>
-          ❌ Hủy
-        </button>
+        <button type="button" onClick={onCancel}>❌ Hủy</button>
       </div>
     </form>
   );

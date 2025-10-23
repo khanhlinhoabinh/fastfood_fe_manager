@@ -4,21 +4,31 @@
   min-height: 100vh;
   font-family: "Segoe UI", sans-serif;
 }
- 
-.payment-title {
+
+/* ✅ Tiêu đề chính */
+.payment-title,
+h2 {
   text-align: center;
   font-size: 28px;
   color: #d32f2f;
   margin-bottom: 25px;
 }
- 
+
+/* ✅ Tiêu đề danh sách */
+h3 {
+  text-align: center;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+/* ✅ Nút chức năng */
 .payment-function-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
 }
- 
+
 .payment-function-buttons button {
   padding: 10px 20px;
   background-color: #f6d365;
@@ -28,41 +38,36 @@
   cursor: pointer;
   transition: 0.3s;
 }
- 
+
 .payment-function-buttons button.active,
 .payment-function-buttons button:hover {
   background-color: #ff9800;
   color: white;
 }
- 
-.payment-table-section h2 {
-  text-align: center;
-  color: #444;
-  margin-bottom: 15px;
-}
- 
-.search-section {
+
+/* ✅ Thanh tìm kiếm */
+.payment-search {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;
 }
- 
-.search-input {
+
+.payment-search input {
   padding: 8px 12px;
   width: 250px;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
 }
- 
-.search-input:focus {
+
+.payment-search input:focus {
   border-color: #ff9800;
   box-shadow: 0 0 5px rgba(255, 152, 0, 0.4);
 }
- 
-.search-button {
+
+.payment-search button {
   padding: 8px 14px;
   background-color: #ff9800;
   color: white;
@@ -71,32 +76,56 @@
   cursor: pointer;
   transition: 0.3s;
 }
- 
-.search-button:hover {
+
+.payment-search button:hover {
   background-color: #e65100;
 }
- 
+
+/* ✅ Bảng danh sách */
 .payment-table {
-  width: 100%;
+  width: 90%;
+  margin: auto;
   border-collapse: collapse;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
- 
+
 .payment-table th,
 .payment-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: center;
 }
- 
+
 .payment-table th {
   background-color: #ffcc80;
 }
- 
+
 .payment-table tr:nth-child(even) {
   background-color: #fff3e0;
 }
- 
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+/* ✅ Nút hành động */
+.edit-button {
+  background-color: #64b5f6;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-right: 5px;
+}
+
+.edit-button:hover {
+  background-color: #1976d2;
+}
+
 .delete-button {
   background-color: #e57373;
   color: white;
@@ -106,17 +135,12 @@
   cursor: pointer;
   transition: 0.3s;
 }
- 
+
 .delete-button:hover {
   background-color: #c62828;
 }
- 
-.no-data {
-  text-align: center;
-  color: #999;
-  padding: 20px;
-}
- 
+
+/* ✅ Form thêm/sửa */
 .payment-form {
   display: flex;
   flex-direction: column;
@@ -128,14 +152,14 @@
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
- 
+
 .payment-form input,
 .payment-form select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
- 
+
 .payment-form button {
   padding: 10px 15px;
   border: none;
@@ -146,18 +170,110 @@
   font-weight: bold;
   transition: 0.3s;
 }
- 
+
 .payment-form button:hover {
   background: #f57c00;
 }
- 
+
 .form-buttons {
   display: flex;
   justify-content: space-between;
 }
- 
-.edit-button {
-  background-color: #64b5f6;
+
+/* ✅ PHÂN TRANG */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25px 0;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  background-color: #ffb74d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #f57c00;
+  color: white;
+}
+
+.pagination button:disabled {
+  background-color: #ffe0b2;
+  cursor: not-allowed;
+}
+
+.pagination .active-page {
+  background-color: #e65100;
+  color: white;
+  font-weight: bold;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .payment-table {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .payment-table th,
+  .payment-table td {
+    padding: 8px;
+  }
+
+  .payment-form {
+    width: 90%;
+  }
+
+  .payment-search {
+    flex-direction: column;
+  }
+
+  .payment-search input {
+    width: 100%;
+  }
+}
+/* ✅ Nút icon sắp xếp */
+.sort-icon-button {
+  background-color: #ffe082;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.sort-icon-button:hover {
+  background-color: #ffca28;
+  color: white;
+}
+
+/* ✅ Dropdown sắp xếp */
+.sort-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sort-options select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.sort-options button {
+  background-color: #4caf50;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -165,30 +281,7 @@
   cursor: pointer;
   transition: 0.2s;
 }
- 
-.edit-button:hover {
-  background-color: #1976d2;
-}
- 
-@media (max-width: 768px) {
-  .payment-table {
-    font-size: 14px;
-  }
- 
-  .payment-table th,
-  .payment-table td {
-    padding: 8px;
-  }
- 
-  .payment-form {
-    width: 90%;
-  }
- 
-  .search-section {
-    flex-direction: column;
-  }
- 
-  .search-input {
-    width: 100%;
-  }
+
+.sort-options button:hover {
+  background-color: #388e3c;
 }
