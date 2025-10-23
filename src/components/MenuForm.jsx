@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MenuSection.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const MenuForm = ({ menuItem, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -32,7 +35,7 @@ const MenuForm = ({ menuItem, onSave, onCancel }) => {
     e.preventDefault();
 
     if (!formData.name.trim() || !formData.category.trim() || formData.price <= 0) {
-      alert("Vui lòng điền đầy đủ thông tin hợp lệ!");
+      toast.error("Vui lòng điền đầy đủ thông tin hợp lệ!");
       return;
     }
 
@@ -42,16 +45,16 @@ const MenuForm = ({ menuItem, onSave, onCancel }) => {
           `http://localhost:8080/api/menuitems/${menuItem.menuItemID}`,
           formData
         );
-        alert("✅ Cập nhật món ăn thành công!");
+        toast.success("✅ Cập nhật món ăn thành công!");
       } else {
         await axios.post("http://localhost:8080/api/menuitems", formData);
-        alert("✅ Thêm món ăn mới thành công!");
+        toast.success("Thêm món ăn mới thành công!");
       }
 
       if (onSave) onSave();
     } catch (err) {
       console.error("❌ Lỗi khi lưu món ăn:", err);
-      alert("Không thể lưu món ăn. Vui lòng thử lại!");
+      toast.error("Không thể lưu món ăn. Vui lòng thử lại!");
     }
   };
 

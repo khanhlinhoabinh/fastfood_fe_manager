@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./MenuSection.css";
 import axios from "axios";
 import MenuForm from "./MenuForm";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
@@ -79,11 +82,11 @@ const fetchMenuItems = async (keyword = "", page = 0) => {
     if (!window.confirm("Bạn có chắc muốn xóa món ăn này?")) return;
     try {
       await axios.delete(`http://localhost:8080/api/menuitems/${id}`);
-      alert("Xóa món ăn thành công!");
+      toast.success("Xóa món ăn thành công!");
       fetchMenuItems(searchKeyword.trim(), currentPage);
     } catch (err) {
       console.error("Lỗi khi xóa món ăn:", err);
-      alert("Không thể xóa món ăn. Vui lòng thử lại!");
+      toast.error("Không thể xóa món ăn. Vui lòng thử lại!");
     }
   };
   
@@ -101,6 +104,7 @@ const handleEdit = (item) => {
 
   return (
     <div className="menu-container">
+       <ToastContainer />
       <h1 className="menu-title">🍔 Danh Sách Món Ăn</h1>
 
       <div className="menu-function-buttons">
