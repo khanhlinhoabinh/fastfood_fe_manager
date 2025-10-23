@@ -1,3 +1,4 @@
+
 .customer-container {
   padding: 30px;
   background-color: #fff8ef;
@@ -8,7 +9,7 @@
 .customer-title {
   text-align: center;
   font-size: 28px;
-  color: #1976d2;
+  color: #2e7d32; /* Đổi sang màu tiêu đề của staff */
   margin-bottom: 25px;
 }
 
@@ -17,12 +18,13 @@
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .customer-function-buttons button {
-  padding: 10px 20px;
-  background-color: #a5d6a7;
-  border: 1px solid #388e3c;
+  padding: 8px 14px;
+  background-color: #f6d365; /* Màu nền nút của staff */
+  border: 1px solid #d3a625;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
@@ -31,7 +33,7 @@
 
 .customer-function-buttons button.active,
 .customer-function-buttons button:hover {
-  background-color: #43a047;
+  background-color: #d3a625;
   color: white;
 }
 
@@ -41,6 +43,7 @@
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .search-input {
@@ -52,7 +55,7 @@
 }
 
 .search-button {
-  background-color: #1976d2;
+  background-color: #81c784; /* Màu nút tìm kiếm của staff */
   color: white;
   border: none;
   padding: 8px 16px;
@@ -62,7 +65,7 @@
 }
 
 .search-button:hover {
-  background-color: #1565c0;
+  background-color: #66bb6a;
 }
 
 .customer-table-section h2 {
@@ -74,27 +77,28 @@
 .customer-table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
 }
 
 .customer-table th,
 .customer-table td {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 10px;
   text-align: center;
+  font-size: 14px;
 }
 
 .customer-table th {
-  background-color: #c8e6c9;
+  background-color: #ffcc80; /* Màu header bảng của staff */
 }
 
 .customer-table tr:nth-child(even) {
-  background-color: #f1f8e9;
+  background-color: #fff3e0; /* Màu dòng chẵn của staff */
 }
 
 /* ✅ Nút xoá */
 .delete-button {
-  background-color: #e53935;
+  background-color: #ef9a9a; /* Màu nút xoá của staff */
   color: white;
   border: none;
   padding: 6px 12px;
@@ -104,7 +108,7 @@
 }
 
 .delete-button:hover {
-  background-color: #c62828;
+  filter: brightness(0.95);
 }
 
 .no-data {
@@ -122,21 +126,16 @@
 }
 
 .pagination button {
-  padding: 8px 14px;
-  border: 1px solid #1976d2;
-  background-color: white;
-  cursor: pointer;
+  padding: 8px 12px;
+  background-color: #ffb74d; /* Màu nút phân trang của staff */
+  border: none;
   border-radius: 6px;
-  transition: 0.2s;
-}
-
-.pagination button:hover {
-  background-color: #1976d2;
-  color: white;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .pagination button.active-page {
-  background-color: #1976d2;
+  background-color: #e65100;
   color: white;
   font-weight: bold;
 }
@@ -145,6 +144,7 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 .customer-form {
   display: flex;
   flex-direction: column;
@@ -169,19 +169,20 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  background: #ff9800;
+  background: #ffb74d; /* Màu nút form của staff */
   color: white;
   font-weight: bold;
 }
 
 .customer-form button:hover {
-  background: #f57c00;
+  background: #e65100;
 }
 
 .form-buttons {
   display: flex;
   justify-content: space-between;
 }
+
 /* ✅ Nút icon sắp xếp */
 .sort-icon-button {
   background-color: #ffcc80;
@@ -228,4 +229,3 @@
 .sort-options button:hover {
   background-color: #388e3c;
 }
-
