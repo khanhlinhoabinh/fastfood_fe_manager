@@ -7,7 +7,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
     staffID: "",
     orderDate: new Date().toISOString().slice(0, 16),
     totalAmount: 0,
-    status: "NEW",
+    status: "Chưa thanh toán",
   });
   const [saving, setSaving] = useState(false);
 
@@ -24,7 +24,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         staffID: order.staffID || "",
         orderDate: local,
         totalAmount: order.totalAmount || 0,
-        status: order.status || "NEW",
+        status: order.status || "Chưa thanh toán",
         id: order.orderID,
       });
     } else {
@@ -33,7 +33,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         staffID: "",
         orderDate: new Date().toISOString().slice(0, 16),
         totalAmount: 0,
-        status: "NEW",
+        status: "Chưa thanh toán",
       });
     }
   }, [order]);
@@ -59,22 +59,26 @@ const OrderForm = ({ order, onClose, onSaved }) => {
 
     setSaving(true);
     try {
-      if (form.id) {
-        // Nếu form.id có giá trị (có đơn hàng để sửa)
-        await axios.put(`http://localhost:8080/api/orders/${form.id}`, payload); // Gọi PUT để sửa
-        alert("Cập nhật thành công 🎉");
-      } else {
-        // Nếu không có form.id, tức là đang tạo mới
-        await axios.post("http://localhost:8080/api/orders", payload); // Gọi POST để tạo mới
-        alert("Tạo thành công 🎉");
-      }
-      onSaved(); // reload danh sách sau khi thêm hoặc sửa
-    } catch (err) {
-      console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
-      alert("Tạo/Sửa thất bại");
-    } finally {
-      setSaving(false);
-    }
+  let response;
+  if (form.id) {
+    response = await axios.put(`http://localhost:8080/api/orders/${form.id}`, payload);
+  } else {
+    response = await axios.post("http://localhost:8080/api/orders", payload);
+  }
+
+  if (response.status === 200 || response.status === 201) {
+    alert(form.id ? "Cập nhật thành công 🎉" : "Tạo thành công 🎉");
+    onSaved(); // reload danh sách
+  } else {
+    alert("Tạo/Sửa thất bại");
+  }
+} catch (err) {
+  console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
+  alert("Tạo/Sửa thất bại");
+  onCancel(); // đóng form
+} finally {
+  setSaving(false);
+}
   };
 
   return (
