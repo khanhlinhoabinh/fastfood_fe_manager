@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./StaffSection.css";
 
 const StaffForm = ({ staff, onSave, onCancel }) => {
@@ -23,21 +25,21 @@ const StaffForm = ({ staff, onSave, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.position.trim() || !formData.shift.trim()) {
-      alert("Vui lòng điền đầy đủ thông tin!");
+      toast.error("⚠️ Vui lòng điền đầy đủ thông tin!");
       return;
     }
     try {
       if (staff) {
         await axios.put(`http://localhost:8080/api/staff/${staff.staffID}`, formData);
-        alert("✅ Cập nhật nhân viên thành công!");
+        toast.success("✅ Cập nhật nhân viên thành công!");
       } else {
         await axios.post("http://localhost:8080/api/staff", formData);
-        alert("✅ Thêm nhân viên mới thành công!");
+        toast.success("✅ Thêm nhân viên mới thành công!");
       }
       if (onSave) onSave();
     } catch (err) {
       console.error("❌ Lỗi khi lưu nhân viên:", err);
-      alert("Không thể lưu nhân viên. Vui lòng thử lại!");
+      toast.error("❌ Không thể lưu nhân viên. Vui lòng thử lại!");
     }
   };
 
