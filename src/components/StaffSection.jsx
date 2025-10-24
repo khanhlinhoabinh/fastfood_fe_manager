@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import StaffForm from "./StaffForm";
+import { toast, ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 import "./StaffSection.css";
 
 const StaffSection = () => {
@@ -47,6 +50,7 @@ const StaffSection = () => {
       setCurrentPage(keyword.trim() ? 0 : page);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách nhân viên:", err);
+      toast.error("❌ Không thể tải danh sách nhân viên.");
       setStaffList([]);
     }
   };
@@ -67,14 +71,23 @@ const StaffSection = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa nhân viên này?")) return;
+    const result = await Swal.fire({
+      title: "Bạn có chắc muốn xoá nhân viên này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await axios.delete(`http://localhost:8080/api/staff/${id}`);
-      alert("Xóa nhân viên thành công!");
+      toast.success("✅ Xóa nhân viên thành công!");
       fetchStaff(searchKeyword.trim(), currentPage);
     } catch (err) {
       console.error("Lỗi khi xóa nhân viên:", err);
-      alert("Không thể xóa nhân viên. Vui lòng thử lại!");
+      toast.error("❌ Không thể xóa nhân viên. Vui lòng thử lại!");
     }
   };
 
@@ -90,15 +103,20 @@ const StaffSection = () => {
 
   return (
     <div className="staff-container">
+      <ToastContainer />
       <h1 className="staff-title">👨‍🍳 Danh Sách Nhân Viên</h1>
 
       <div className="staff-function-buttons">
-        <button className={selectedFunction === "list" ? "active" : ""} onClick={() => setSelectedFunction("list")}>Danh sách nhân viên</button>
+        <button className={selectedFunction === "list" ? "active" : ""} onClick={() => setSelectedFunction("list")}>
+          Danh sách nhân viên
+        </button>
         <button className={selectedFunction === "add" ? "active" : ""} onClick={() => {
           setSelectedFunction("add");
           setShowForm(true);
           setEditingStaff(null);
-        }}>Thêm nhân viên mới</button>
+        }}>
+          Thêm nhân viên mới
+        </button>
       </div>
 
       {selectedFunction === "list" && (
@@ -164,7 +182,9 @@ const StaffSection = () => {
               <div className="pagination">
                 <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 0}>⬅ Trước</button>
                 {Array.from({ length: totalPages }, (_, index) => (
-                  <button key={index} className={index === currentPage ? "active-page" : ""} onClick={() => handlePageChange(index)}>{index + 1}</button>
+                  <button key={index} className={index === currentPage ? "active-page" : ""} onClick={() => handlePageChange(index)}>
+                    {index + 1}
+                  </button>
                 ))}
                 <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1}>Sau ➡</button>
               </div>
@@ -192,4 +212,5 @@ const StaffSection = () => {
     </div>
   );
 };
+
 export default StaffSection;
