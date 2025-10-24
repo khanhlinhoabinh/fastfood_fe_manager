@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import OrderDetailForm from "./OrderDetailForm";
+import { toast, ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 import "./OrderDetailSection.css";
 
 const OrderDetailSection = () => {
@@ -11,7 +14,6 @@ const OrderDetailSection = () => {
   const [selectedFunction, setSelectedFunction] = useState("list");
   const [showForm, setShowForm] = useState(false);
   const [editingOrderDetail, setEditingOrderDetail] = useState(null);
-
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [sortField, setSortField] = useState("quantity");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -23,42 +25,48 @@ const OrderDetailSection = () => {
   const fetchOrderDetails = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/order-details/sort", {
-        params: {
-          sortBy: sortField,
-          direction: sortOrder,
-        },
+        params: { sortBy: sortField, direction: sortOrder },
       });
       setOrderDetails(response.data);
-      setTotalPages(1); // Nếu dùng API phân trang thì thay bằng response.data.totalPages
+      setTotalPages(1);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách chi tiết đơn hàng:", error);
+      toast.error("❌ Không thể tải dữ liệu!");
     }
   };
 
   const handleSearch = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/order-details/search", {
-        params: {
-          orderID: searchKeyword,
-          menuItemID: searchKeyword,
-        },
+        params: { orderID: searchKeyword, menuItemID: searchKeyword },
       });
       setOrderDetails(response.data);
       setTotalPages(1);
       setCurrentPage(0);
     } catch (error) {
       console.error("Lỗi khi tìm kiếm:", error);
+      toast.error("❌ Không thể tìm kiếm!");
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Bạn có chắc muốn xoá chi tiết đơn hàng này?")) {
-      try {
-        await axios.delete(`http://localhost:8080/api/order-details/${id}`);
-        fetchOrderDetails();
-      } catch (error) {
-        console.error("Lỗi khi xoá:", error);
-      }
+    const result = await Swal.fire({
+      title: "Bạn có chắc muốn xoá chi tiết đơn hàng này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await axios.delete(`http://localhost:8080/api/order-details/${id}`);
+      toast.success("Xóa chi tiết đơn hàng thành công!");
+      fetchOrderDetails();
+    } catch (error) {
+      console.error("Lỗi khi xoá:", error);
+      toast.error("❌ Không thể xoá!");
     }
   };
 
@@ -74,49 +82,28 @@ const OrderDetailSection = () => {
   };
 
   return (
-    <div className="menu-container">
-      <h2 className="menu-title">📋 Danh sách chi tiết đơn hàng</h2>
+    <div className="order-container">
+      <ToastContainer />
+      <h2 className="order-title">📋 Danh sách chi tiết đơn hàng</h2>
 
-      {/* Nút chức năng */}
-      <div className="menu-function-buttons">
-        <button
-          className={selectedFunction === "list" ? "active" : ""}
-          onClick={() => {
-            setSelectedFunction("list");
-            setShowForm(false);
-            fetchOrderDetails();
-          }}
-        >
-          📄 Danh sách
-        </button>
-        <button
-          className={selectedFunction === "add" ? "active" : ""}
-          onClick={() => {
-            setSelectedFunction("add");
-            setShowForm(true);
-            setEditingOrderDetail(null);
-          }}
-        >
-          ➕ Thêm mới
-        </button>
+      <div className="order-function-buttons">
+        <button className={selectedFunction === "list" ? "active" : ""} onClick={() => {
+          setSelectedFunction("list");
+          setShowForm(false);
+          fetchOrderDetails();
+        }}>📄 Danh sách</button>
+
+        <button className={selectedFunction === "add" ? "active" : ""} onClick={() => {
+          setSelectedFunction("add");
+          setShowForm(true);
+          setEditingOrderDetail(null);
+        }}>➕ Thêm mới</button>
       </div>
 
-      {/* Tìm kiếm + Sắp xếp */}
-      <div className="menu-search">
-        <input
-          type="text"
-          placeholder="🔍 Tìm theo Mã đơn hoặc Mã món..."
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-        />
+      <div className="order-search">
+        <input type="text" placeholder="🔍 Tìm theo mã đơn hoặc mã món..." value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
         <button onClick={handleSearch}>Tìm kiếm</button>
-
-        <button
-          className="sort-icon-button"
-          onClick={() => setShowSortOptions(!showSortOptions)}
-        >
-          ⚙️ Sắp xếp
-        </button>
+        <button className="sort-icon-button" onClick={() => setShowSortOptions(!showSortOptions)}>⚙️ Sắp xếp</button>
       </div>
 
       {showSortOptions && (
@@ -133,54 +120,44 @@ const OrderDetailSection = () => {
         </div>
       )}
 
-      {/* Bảng danh sách */}
       {selectedFunction === "list" && (
-        <div className="menu-table-section">
-          <table className="menu-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Mã đơn</th>
-                <th>Mã món</th>
-                <th>Số lượng</th>
-                <th>Đơn giá (₫)</th>
-                <th>Ghi chú</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orderDetails.length > 0 ? (
-                orderDetails.map((detail) => (
-                  <tr key={detail.orderDetailID}>
-                    <td>{detail.orderDetailID}</td>
-                    <td>{detail.orderID}</td>
-                    <td>{detail.menuItemID}</td>
-                    <td>{detail.quantity}</td>
-                    <td>{detail.unitPrice?.toLocaleString()}</td>
-                    <td>{detail.note}</td>
-                    <td>
-                      <button className="edit-button" onClick={() => handleEdit(detail)}>
-                        ✏️ Sửa
-                      </button>
-                      <button className="delete-btn" onClick={() => handleDelete(detail.orderDetailID)}>
-                        ❌ Xoá
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="no-data">
-                    Không có dữ liệu chi tiết đơn hàng
+        <table className="order-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mã đơn</th>
+              <th>Mã món</th>
+              <th>Số lượng</th>
+              <th>Đơn giá (₫)</th>
+              <th>Ghi chú</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orderDetails.length > 0 ? (
+              orderDetails.map((detail) => (
+                <tr key={detail.orderDetailID}>
+                  <td>{detail.orderDetailID}</td>
+                  <td>{detail.orderID}</td>
+                  <td>{detail.menuItemID}</td>
+                  <td>{detail.quantity}</td>
+                  <td>{detail.unitPrice?.toLocaleString()}</td>
+                  <td>{detail.note}</td>
+                  <td>
+                    <button className="edit-button" onClick={() => handleEdit(detail)}>✏️ Sửa</button>
+                    <button className="delete-btn" onClick={() => handleDelete(detail.orderDetailID)}>❌ Xoá</button>
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="no-data">Không có dữ liệu chi tiết đơn hàng</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       )}
 
-      {/* Form thêm/sửa */}
       {(selectedFunction === "add" || selectedFunction === "edit") && showForm && (
         <OrderDetailForm
           orderDetail={editingOrderDetail}
@@ -202,3 +179,4 @@ const OrderDetailSection = () => {
 };
 
 export default OrderDetailSection;
+``
