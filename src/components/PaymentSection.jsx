@@ -2,25 +2,24 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./PaymentSection.css";
 import PaymentForm from "./PaymentForm";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 export default function PaymentSection() {
   const [payments, setPayments] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingPayment, setEditingPayment] = useState(null);
-
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [showSortOptions, setShowSortOptions] = useState(false);
 
-  
   const pageSize = 5;
 
-  // ✅ Hàm lấy danh sách thanh toán có phân trang
-  
-const fetchPayments = async (keyword = "", page = 0) => {
+  const fetchPayments = async (keyword = "", page = 0) => {
     try {
       let url = "";
       if (sortField && sortOrder) {
@@ -45,10 +44,10 @@ const fetchPayments = async (keyword = "", page = 0) => {
       }
     } catch (err) {
       console.error("Lỗi khi lấy danh sách thanh toán:", err);
+      toast.error("❌ Không thể tải danh sách thanh toán.");
       setPayments([]);
     }
   };
-
 
   const handlePageChange = (page) => {
     if (page >= 0 && page < totalPages) {
@@ -64,21 +63,29 @@ const fetchPayments = async (keyword = "", page = 0) => {
   const handleSearch = () => {
     fetchPayments(searchKeyword.trim(), 0);
   };
-  
-const handleSortApply = () => {
+
+  const handleSortApply = () => {
     fetchPayments(searchKeyword.trim(), 0);
   };
 
-
   const handleDelete = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa thanh toán này?")) return;
+    const result = await Swal.fire({
+      title: "Bạn có chắc muốn xoá thanh toán này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await axios.delete(`http://localhost:8080/api/payments/${id}`);
-      alert("🗑️ Xóa thanh toán thành công!");
+      toast.success("✅ Xóa thanh toán thành công!");
       fetchPayments(searchKeyword.trim(), currentPage);
     } catch (err) {
       console.error("Lỗi khi xóa thanh toán:", err);
-      alert("Không thể xóa thanh toán. Vui lòng thử lại!");
+      toast.error("❌ Không thể xóa thanh toán. Vui lòng thử lại!");
     }
   };
 
@@ -89,7 +96,9 @@ const handleSortApply = () => {
 
   return (
     <div className="menu-container">
+      <ToastContainer />
       <h2>💳 Quản lý Thanh toán</h2>
+
       <div className="menu-function-buttons">
         <button
           onClick={() => {
@@ -113,8 +122,7 @@ const handleSortApply = () => {
       {!showForm && (
         <>
           <div className="menu-search">
-            
-<input
+            <input
               type="text"
               placeholder="🔍 Tìm theo phương thức..."
               value={searchKeyword}
@@ -151,7 +159,6 @@ const handleSortApply = () => {
               <button onClick={handleSortApply}>Áp dụng</button>
             </div>
           )}
-
 
           <h3>📋 Danh sách Thanh toán</h3>
           <table className="menu-table">
@@ -198,7 +205,6 @@ const handleSortApply = () => {
             </tbody>
           </table>
 
-          {/* ✅ PHÂN TRANG */}
           {totalPages > 1 && (
             <div className="pagination">
               <button

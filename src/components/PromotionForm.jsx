@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./PromotionSection.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PromotionForm = ({ promotion, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ const PromotionForm = ({ promotion, onSave, onCancel }) => {
     e.preventDefault();
 
     if (!formData.name || !formData.type || formData.discountPercent <= 0) {
-      alert("⚠️ Vui lòng nhập đầy đủ thông tin hợp lệ!");
+      toast.error("⚠️ Vui lòng nhập đầy đủ thông tin hợp lệ!");
       return;
     }
 
@@ -33,14 +35,14 @@ const PromotionForm = ({ promotion, onSave, onCancel }) => {
           `http://localhost:8080/api/promotions/${promotion.promotionID}`,
           formData
         );
-        alert("✅ Cập nhật khuyến mãi thành công!");
+        toast.success(" Cập nhật khuyến mãi thành công!");
       } else {
         await axios.post("http://localhost:8080/api/promotions", formData);
-        alert("✅ Thêm khuyến mãi mới thành công!");
+        toast.success(" Thêm khuyến mãi mới thành công!");
       }
       if (onSave) onSave();
     } catch (err) {
-      alert(err.response?.data || "❌ Lỗi khi lưu khuyến mãi!");
+      toast.error(err.response?.data || " Lỗi khi lưu khuyến mãi!");
     }
   };
 
