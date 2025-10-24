@@ -5,23 +5,13 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* ✅ Tiêu đề chính */
-.payment-title,
-h2 {
+.payment-title {
   text-align: center;
   font-size: 28px;
-  color: #d32f2f;
+  color: #2e7d32;
   margin-bottom: 25px;
 }
 
-/* ✅ Tiêu đề danh sách */
-h3 {
-  text-align: center;
-  color: #444;
-  margin-bottom: 15px;
-}
-
-/* ✅ Nút chức năng */
 .payment-function-buttons {
   display: flex;
   justify-content: center;
@@ -45,13 +35,13 @@ h3 {
   color: white;
 }
 
-/* ✅ Thanh tìm kiếm */
 .payment-search {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 
 .payment-search input {
@@ -81,12 +71,10 @@ h3 {
   background-color: #e65100;
 }
 
-/* ✅ Bảng danh sách */
 .payment-table {
-  width: 90%;
-  margin: auto;
+  width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
 }
 
 .payment-table th,
@@ -94,6 +82,7 @@ h3 {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: center;
+  font-size: 14px;
 }
 
 .payment-table th {
@@ -104,13 +93,6 @@ h3 {
   background-color: #fff3e0;
 }
 
-.no-data {
-  text-align: center;
-  color: #999;
-  padding: 20px;
-}
-
-/* ✅ Nút hành động */
 .edit-button {
   background-color: #64b5f6;
   color: white;
@@ -119,7 +101,6 @@ h3 {
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
-  margin-right: 5px;
 }
 
 .edit-button:hover {
@@ -127,20 +108,19 @@ h3 {
 }
 
 .delete-button {
-  background-color: #e57373;
+  background-color: #ef9a9a;
   color: white;
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .delete-button:hover {
-  background-color: #c62828;
+  filter: brightness(0.95);
 }
 
-/* ✅ Form thêm/sửa */
 .payment-form {
   display: flex;
   flex-direction: column;
@@ -165,14 +145,14 @@ h3 {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  background: #ff9800;
+  background: #ffb74d;
   color: white;
   font-weight: bold;
   transition: 0.3s;
 }
 
 .payment-form button:hover {
-  background: #f57c00;
+  background: #e65100;
 }
 
 .form-buttons {
@@ -180,7 +160,57 @@ h3 {
   justify-content: space-between;
 }
 
-/* ✅ PHÂN TRANG */
+.sort-icon-button {
+  background-color: #ffcc80;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.sort-icon-button:hover {
+  background-color: #ffa726;
+  color: white;
+}
+
+.sort-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sort-options select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.sort-options button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sort-options button:hover {
+  background-color: #388e3c;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -213,75 +243,4 @@ h3 {
   background-color: #e65100;
   color: white;
   font-weight: bold;
-}
-
-/* ✅ Responsive */
-@media (max-width: 768px) {
-  .payment-table {
-    font-size: 14px;
-    width: 100%;
-  }
-
-  .payment-table th,
-  .payment-table td {
-    padding: 8px;
-  }
-
-  .payment-form {
-    width: 90%;
-  }
-
-  .payment-search {
-    flex-direction: column;
-  }
-
-  .payment-search input {
-    width: 100%;
-  }
-}
-/* ✅ Nút icon sắp xếp */
-.sort-icon-button {
-  background-color: #ffe082;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.sort-icon-button:hover {
-  background-color: #ffca28;
-  color: white;
-}
-
-/* ✅ Dropdown sắp xếp */
-.sort-options {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.sort-options select {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.sort-options button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.sort-options button:hover {
-  background-color: #388e3c;
 }

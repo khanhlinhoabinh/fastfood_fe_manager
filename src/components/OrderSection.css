@@ -1,4 +1,3 @@
-/* OrderSection.css */
 .order-container {
   padding: 30px;
   background-color: #fff8ef;
@@ -9,11 +8,10 @@
 .order-title {
   text-align: center;
   font-size: 28px;
-  color: #d32f2f;
+  color: #2e7d32;
   margin-bottom: 25px;
 }
 
-/* Chức năng chính */
 .order-controls {
   display: flex;
   justify-content: center;
@@ -36,7 +34,6 @@
   color: white;
 }
 
-/* 🔍 Thanh tìm kiếm + ⚙️ Sắp xếp */
 .search-section {
   display: flex;
   justify-content: center;
@@ -73,54 +70,6 @@
   background-color: #e65100;
 }
 
-/* ⚙️ Nút icon sắp xếp */
-.sort-icon-button {
-  background-color: #ffe082;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.sort-icon-button:hover {
-  background-color: #ffca28;
-  color: white;
-}
-
-/* Dropdown sắp xếp */
-.sort-options {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.sort-options select {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.sort-options button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.sort-options button:hover {
-  background-color: #388e3c;
-}
-
-/* Bảng đơn hàng */
 .order-table {
   width: 100%;
   border-collapse: collapse;
@@ -143,32 +92,36 @@
   background-color: #fff3e0;
 }
 
-/* Nút xoá */
+.edit-button,
 .small {
-  padding: 6px 8px;
-  font-size: 13px;
-  margin: 0 4px;
+  background-color: #64b5f6;
+  color: white;
+  border: none;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.edit-button:hover,
+.small:hover {
+  background-color: #1976d2;
 }
 
 .small.danger {
   background-color: #ef9a9a;
-  border: none;
 }
 
-.small:hover {
-  filter: brightness(0.95);
+.small.danger:hover {
+  background-color: #c62828;
 }
 
-/* Khi không có dữ liệu */
 .no-data {
   text-align: center;
   color: #999;
   padding: 20px;
 }
 
-/* PHÂN TRANG */
 .pagination {
   display: flex;
   justify-content: center;
@@ -203,7 +156,6 @@
   font-weight: bold;
 }
 
-/* Modal form */
 .modal-backdrop {
   position: fixed;
   inset: 0;

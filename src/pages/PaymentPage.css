@@ -1,7 +1,7 @@
 .payment-page {
   display: flex;
   flex-direction: column;
-  background-color: #f9f9ff; /* tông xanh nhẹ, đồng bộ với PaymentSection */
+  background-color: #fffdf7;
   min-height: 100vh;
 }
 
