@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const getLocalDateTime = () => {
   const now = new Date();
-  const offset = now.getTimezoneOffset(); // phút lệch so với UTC
+  const offset = now.getTimezoneOffset();
   const local = new Date(now.getTime() - offset * 60000);
-  return local.toISOString().slice(0, 16); // yyyy-MM-ddTHH:mm
+  return local.toISOString().slice(0, 16);
 };
 
 const OrderForm = ({ order, onClose, onSaved }) => {
   const [form, setForm] = useState({
     customerID: "",
     staffID: "",
-    orderDate: getLocalDateTime(), // giờ hiện tại
+    orderDate: getLocalDateTime(),
     totalAmount: 0,
     status: "Chưa thanh toán",
   });
@@ -24,7 +26,6 @@ const OrderForm = ({ order, onClose, onSaved }) => {
       const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
         .toISOString()
         .slice(0, 16);
-
       setForm({
         customerID: order.customerID || "",
         staffID: order.staffID || "",
@@ -34,7 +35,6 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         id: order.orderID,
       });
     } else {
-      // Khi mở form thêm mới, tự động cập nhật giờ hiện tại
       setForm({
         customerID: "",
         staffID: "",
@@ -55,15 +55,13 @@ const OrderForm = ({ order, onClose, onSaved }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const payload = {
       customerID: Number(form.customerID),
       staffID: Number(form.staffID),
-      orderDate: new Date(form.orderDate).toISOString().slice(0, 19), // chuẩn ISO
+      orderDate: new Date(form.orderDate).toISOString().slice(0, 19),
       totalAmount: parseFloat(form.totalAmount),
       status: form.status,
     };
-
     setSaving(true);
     try {
       let response;
@@ -74,15 +72,15 @@ const OrderForm = ({ order, onClose, onSaved }) => {
       }
 
       if (response.status === 200 || response.status === 201) {
-        alert(form.id ? "Cập nhật thành công 🎉" : "Tạo thành công 🎉");
+        toast.success(form.id ? "✅ Cập nhật thành công!" : "✅ Tạo thành công!");
         onSaved();
         onClose();
       } else {
-        alert("Tạo/Sửa thất bại");
+        toast.error("❌ Tạo/Sửa thất bại!");
       }
     } catch (err) {
       console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
-      alert("Tạo/Sửa thất bại");
+      toast.error("❌ Tạo/Sửa thất bại!");
       onClose();
     } finally {
       setSaving(false);
@@ -96,47 +94,20 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         <form onSubmit={handleSubmit} className="order-form">
           <label>
             Mã khách hàng
-            <input
-              name="customerID"
-              value={form.customerID}
-              onChange={handleChange}
-              required
-            />
+            <input name="customerID" value={form.customerID} onChange={handleChange} required />
           </label>
-
           <label>
             Mã nhân viên
-            <input
-              name="staffID"
-              value={form.staffID}
-              onChange={handleChange}
-              required
-            />
+            <input name="staffID" value={form.staffID} onChange={handleChange} required />
           </label>
-
           <label>
             Ngày giờ đặt
-            <input
-              name="orderDate"
-              type="datetime-local"
-              value={form.orderDate}
-              onChange={handleChange}
-              required
-            />
+            <input name="orderDate" type="datetime-local" value={form.orderDate} onChange={handleChange} required />
           </label>
-
           <label>
             Tổng tiền (₫)
-            <input
-              name="totalAmount"
-              type="number"
-              min="0"
-              value={form.totalAmount}
-              onChange={handleChange}
-              required
-            />
+            <input name="totalAmount" type="number" min="0" value={form.totalAmount} onChange={handleChange} required />
           </label>
-
           <label>
             Trạng thái
             <select name="status" value={form.status} onChange={handleChange}>
@@ -145,7 +116,6 @@ const OrderForm = ({ order, onClose, onSaved }) => {
               <option value="Đang xử lý">Đang xử lý</option>
             </select>
           </label>
-
           <div className="form-actions">
             <button type="submit" className="btn" disabled={saving}>
               {saving ? "Đang lưu..." : "Lưu"}

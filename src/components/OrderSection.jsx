@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import OrderForm from "./OrderForm";
+import { toast, ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 import "./OrderSection.css";
 
 const OrderSection = () => {
@@ -8,11 +11,9 @@ const OrderSection = () => {
   const [selectedFunction, setSelectedFunction] = useState("list");
   const [showForm, setShowForm] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
-
   const [sortField, setSortField] = useState("orderDate");
   const [sortOrder, setSortOrder] = useState("asc");
   const [showSortOptions, setShowSortOptions] = useState(false);
-
   const [searchCustomerID, setSearchCustomerID] = useState("");
 
   useEffect(() => {
@@ -22,14 +23,12 @@ const OrderSection = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/orders/sort", {
-        params: {
-          sortBy: sortField,
-          direction: sortOrder,
-        },
+        params: { sortBy: sortField, direction: sortOrder },
       });
       setOrders(response.data);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách đơn hàng:", error);
+      toast.error("❌ Không thể tải dữ liệu!");
     }
   };
 
@@ -38,25 +37,36 @@ const OrderSection = () => {
       const response = await axios.get("http://localhost:8080/api/orders/search", {
         params: {
           customerID: searchCustomerID,
-          startDate: "2000-01-01T00:00:00", // mặc định khoảng rộng
+          startDate: "2000-01-01T00:00:00",
           endDate: "2100-01-01T00:00:00",
-          status: "", // không lọc theo trạng thái
+          status: "",
         },
       });
       setOrders(response.data);
     } catch (error) {
       console.error("Lỗi khi tìm kiếm theo mã khách hàng:", error);
+      toast.error("❌ Không thể tìm kiếm!");
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Bạn có chắc muốn xoá đơn hàng này?")) {
-      try {
-        await axios.delete(`http://localhost:8080/api/orders/${id}`);
-        fetchOrders();
-      } catch (error) {
-        console.error("Lỗi khi xoá:", error);
-      }
+    const result = await Swal.fire({
+      title: "Bạn có chắc muốn xoá đơn hàng này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await axios.delete(`http://localhost:8080/api/orders/${id}`);
+      toast.success("✅ Xóa đơn hàng thành công!");
+      fetchOrders();
+    } catch (error) {
+      console.error("Lỗi khi xoá:", error);
+      toast.error("❌ Không thể xoá!");
     }
   };
 
@@ -66,48 +76,34 @@ const OrderSection = () => {
     setSelectedFunction("edit");
   };
 
+  const handleSortChange = () => {
+    setShowSortOptions(false);
+    fetchOrders();
+  };
+
   return (
     <div className="order-container">
+      <ToastContainer />
       <h2 className="order-title">📦 Danh sách đơn hàng</h2>
 
-      <div className="order-function-buttons">
-        <button
-          className={selectedFunction === "list" ? "active" : ""}
-          onClick={() => {
-            setSelectedFunction("list");
-            setShowForm(false);
-            fetchOrders();
-          }}
-        >
-          📄 Danh sách
-        </button>
-        <button
-          className={selectedFunction === "add" ? "active" : ""}
-          onClick={() => {
-            setSelectedFunction("add");
-            setShowForm(true);
-            setEditingOrder(null);
-          }}
-        >
-          ➕ Thêm mới
-        </button>
+      <div className="order-controls">
+        <button className="btn" onClick={() => {
+          setSelectedFunction("list");
+          setShowForm(false);
+          fetchOrders();
+        }}>📄 Danh sách</button>
+
+        <button className="btn" onClick={() => {
+          setSelectedFunction("add");
+          setShowForm(true);
+          setEditingOrder(null);
+        }}>➕ Thêm mới</button>
       </div>
 
-      {/* Tìm kiếm theo customerID */}
-      <div className="order-search">
-        <input
-          type="number"
-          placeholder="🔍 Nhập mã khách hàng..."
-          value={searchCustomerID}
-          onChange={(e) => setSearchCustomerID(e.target.value)}
-        />
-        <button onClick={handleSearch}>Tìm kiếm</button>
-        <button
-          className="sort-icon-button"
-          onClick={() => setShowSortOptions(!showSortOptions)}
-        >
-          ⚙️ Sắp xếp
-        </button>
+      <div className="search-section">
+        <input type="text" placeholder="🔍 Mã khách hàng..." value={searchCustomerID} onChange={(e) => setSearchCustomerID(e.target.value)} className="search-input" />
+        <button onClick={handleSearch} className="search-button">Tìm kiếm</button>
+        <button className="sort-icon-button" onClick={() => setShowSortOptions(!showSortOptions)}>⚙️ Sắp xếp</button>
       </div>
 
       {showSortOptions && (
@@ -120,66 +116,56 @@ const OrderSection = () => {
             <option value="asc">Tăng dần</option>
             <option value="desc">Giảm dần</option>
           </select>
-          <button onClick={fetchOrders}>Áp dụng</button>
+          <button onClick={handleSortChange}>Áp dụng</button>
         </div>
       )}
 
-      {/* Bảng danh sách */}
       {selectedFunction === "list" && (
-        <div className="order-table-section">
-          <table className="order-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Khách hàng</th>
-                <th>Ngày đặt</th>
-                <th>Trạng thái</th>
-                <th>Tổng tiền (₫)</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.length > 0 ? (
-                orders.map((order) => (
-                  <tr key={order.orderID}>
-                    <td>{order.orderID}</td>
-                    <td>{order.customerID}</td>
-                    <td>{new Date(order.orderDate).toLocaleString()}</td>
-                    <td>{order.status}</td>
-                    <td>{order.totalAmount?.toLocaleString()}</td>
-                    <td>
-                      <button className="edit-button" onClick={() => handleEdit(order)}>
-                        ✏️ Sửa
-                      </button>
-                      <button className="delete-btn" onClick={() => handleDelete(order.orderID)}>
-                        ❌ Xoá
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="no-data">
-                    Không có dữ liệu đơn hàng
+        <table className="order-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Khách hàng</th>
+              <th>Ngày đặt</th>
+              <th>Trạng thái</th>
+              <th>Tổng tiền (₫)</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.length > 0 ? (
+              orders.map((order) => (
+                <tr key={order.orderID}>
+                  <td>{order.orderID}</td>
+                  <td>{order.customerID}</td>
+                  <td>{new Date(order.orderDate).toLocaleString()}</td>
+                  <td>{order.status}</td>
+                  <td>{order.totalAmount?.toLocaleString()}</td>
+                  <td>
+                    <button className="small" onClick={() => handleEdit(order)}>✏️ Sửa</button>
+                    <button className="small danger" onClick={() => handleDelete(order.orderID)}>❌ Xoá</button>
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="no-data">Không có dữ liệu đơn hàng</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       )}
 
-      {/* Form thêm/sửa */}
       {(selectedFunction === "add" || selectedFunction === "edit") && showForm && (
         <OrderForm
           order={editingOrder}
-          onSave={() => {
+          onSaved={() => {
             setShowForm(false);
             setEditingOrder(null);
             setSelectedFunction("list");
             fetchOrders();
           }}
-          onCancel={() => {
+          onClose={() => {
             setShowForm(false);
             setEditingOrder(null);
             setSelectedFunction("list");
