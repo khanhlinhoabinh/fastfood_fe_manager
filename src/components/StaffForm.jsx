@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -24,8 +23,8 @@ const StaffForm = ({ staff, onSave, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.position.trim() || !formData.shift.trim()) {
-      toast.error("⚠️ Vui lòng điền đầy đủ thông tin!");
+    if (!formData.name.trim() || !formData.position || !formData.shift) {
+      toast.error("Vui lòng điền đầy đủ thông tin!");
       return;
     }
     try {
@@ -39,17 +38,48 @@ const StaffForm = ({ staff, onSave, onCancel }) => {
       if (onSave) onSave();
     } catch (err) {
       console.error("❌ Lỗi khi lưu nhân viên:", err);
-      toast.error("❌ Không thể lưu nhân viên. Vui lòng thử lại!");
+      toast.error("Không thể lưu nhân viên. Vui lòng thử lại!");
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="staff-form">
       <h3>{staff ? "✏️ Sửa nhân viên" : "➕ Thêm nhân viên mới"}</h3>
-      <input name="name" value={formData.name} onChange={handleChange} placeholder="Tên nhân viên" required />
-      <input name="position" value={formData.position} onChange={handleChange} placeholder="Chức vụ" required />
-      <input name="shift" value={formData.shift} onChange={handleChange} placeholder="Ca làm việc" required />
-      <input name="salary" type="number" value={formData.salary} onChange={handleChange} placeholder="Lương" required />
+
+      <input
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Tên nhân viên"
+        required
+      />
+
+      <select name="position" value={formData.position} onChange={handleChange} required>
+        <option value="">-- Chọn chức vụ --</option>
+        <option value="Nhân viên">Nhân viên</option>
+        <option value="Quản lý">Quản lý</option>
+        <option value="Thu ngân">Thu ngân</option>
+        <option value="Phục vụ">Phục vụ</option>
+        <option value="Bếp trưởng">Bếp trưởng</option>
+      </select>
+
+      <select name="shift" value={formData.shift} onChange={handleChange} required>
+        <option value="">-- Chọn ca làm việc --</option>
+        <option value="Sáng">Sáng</option>
+        <option value="Chiều">Chiều</option>
+        <option value="Tối">Tối</option>
+        <option value="Fulltime">Fulltime</option>
+      </select>
+
+      <input
+        name="salary"
+        type="number"
+        value={formData.salary}
+        onChange={handleChange}
+        placeholder="Lương"
+        required
+      />
+
       <div className="form-buttons">
         <button type="submit">💾 Lưu</button>
         <button type="button" onClick={onCancel}>❌ Hủy</button>
