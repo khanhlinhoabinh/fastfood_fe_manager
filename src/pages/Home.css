@@ -1,12 +1,33 @@
+/* ===== Home.css ===== */
+
+/* Container tổng cho trang Home */
 .home-container {
+  min-height: 100vh; /* ✅ full chiều cao màn hình */
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  background-color: #fff7f0; /* ✅ đồng nhất nền với App.css */
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* loại bỏ vạch ngăn cách giữa các vùng */
 }
 
+/* Banner full chiều ngang */
+.home-banner {
+  width: auto;
+  max-height: 80vh; /* có thể chỉnh lên 70–80vh nếu muốn */
+  object-fit: contain;
+  display: block;
+  border: none;
+}
+
+/* Header phần chào mừng */
 .home-header {
+  width: 100%;
   text-align: center;
-  margin: 40px 0 20px 0;
+  margin: 30px 0 20px 0;
 }
 
 .home-header h1 {
@@ -18,4 +39,16 @@
 .home-header p {
   font-size: 18px;
   color: #333;
+}
+
+/* Khu nội dung chính (các chức năng) */
+.home-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff7f0; /* đồng nhất màu nền */
+  padding-bottom: 40px;
 }

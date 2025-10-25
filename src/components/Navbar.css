@@ -1,8 +1,15 @@
 .navbar {
+  width: 100%; /* ✅ Giúp full chiều ngang */
   background-color: #3a3a3a;
   display: flex;
   align-items: center;
+  justify-content: flex-start; /* Căn logo và menu về bên trái */
   padding: 0 20px;
+  box-sizing: border-box; /* Đảm bảo padding không làm vượt khung */
+  position: fixed; /* ✅ Giúp navbar luôn cố định đầu trang nếu muốn */
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 .navbar-logo img {
@@ -27,4 +34,8 @@
 
 .navbar-menu li:hover {
   background-color: #d42127;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
 }
