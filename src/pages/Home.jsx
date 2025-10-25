@@ -5,14 +5,17 @@ import "./Home.css";
 
 export default function Home() {
   return (
-    <div className="home-container">
+    <div className="page"> {/* 👈 Dùng class "page" để auto full màn */}
       <Navbar />
+
       <header className="home-header">
-<img
-          src="/src/assets/banner.webp" 
+        <img
+          src="/src/assets/banner.webp"
           alt="Banner hệ thống quản lý nhà hàng"
           className="home-banner"
-        />      </header>
+        />
+      </header>
+
       <MenuSection />
     </div>
   );

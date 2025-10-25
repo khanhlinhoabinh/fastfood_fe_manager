@@ -1,14 +1,27 @@
-body {
+/* ===== App.css ===== */
+
+/* Toàn bộ ứng dụng chiếm full màn hình và đồng nhất nền */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fafafa;
+  background-color: #fff7f0; /* ✅ màu nền tổng thể */
+  overflow-x: hidden;
 }
 
-button {
-  cursor: pointer;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
+/* Mỗi trang (Home, MenuPage, v.v.) luôn full màn hình */
+.page {
+  min-height: 100vh;      /* ✅ full chiều cao */
+  width: 100%;            /* ✅ full chiều rộng */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff7f0; /* ✅ nền đồng nhất */
+  padding: 20px;
 }
