@@ -34,7 +34,7 @@ const PromotionForm = ({ promotion, onSave, onCancel }) => {
         await axios.put(
           `http://localhost:8080/api/promotions/${promotion.promotionID}`,
           formData
-        );
+        ); 
         toast.success(" Cập nhật khuyến mãi thành công!");
       } else {
         await axios.post("http://localhost:8080/api/promotions", formData);

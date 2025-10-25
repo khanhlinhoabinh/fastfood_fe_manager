@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+// ✅ Lấy giờ địa phương hiện tại
 const getLocalDateTime = () => {
   const now = new Date();
-  const offset = now.getTimezoneOffset(); // phút lệch so với UTC
+  const offset = now.getTimezoneOffset();
   const local = new Date(now.getTime() - offset * 60000);
   return local.toISOString().slice(0, 16); // yyyy-MM-ddTHH:mm
 };
@@ -12,12 +15,13 @@ const OrderForm = ({ order, onClose, onSaved }) => {
   const [form, setForm] = useState({
     customerID: "",
     staffID: "",
-    orderDate: getLocalDateTime(), // giờ hiện tại
+    orderDate: getLocalDateTime(),
     totalAmount: 0,
     status: "Chưa thanh toán",
   });
   const [saving, setSaving] = useState(false);
 
+  // ✅ Khi chỉnh sửa thì load dữ liệu sẵn vào form
   useEffect(() => {
     if (order) {
       const d = order.orderDate ? new Date(order.orderDate) : new Date();
@@ -34,7 +38,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         id: order.orderID,
       });
     } else {
-      // Khi mở form thêm mới, tự động cập nhật giờ hiện tại
+      // Khi mở form thêm mới
       setForm({
         customerID: "",
         staffID: "",
@@ -45,45 +49,50 @@ const OrderForm = ({ order, onClose, onSaved }) => {
     }
   }, [order]);
 
+  // ✅ Xử lý thay đổi input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((s) => ({
-      ...s,
+    setForm((prev) => ({
+      ...prev,
       [name]: name === "totalAmount" ? Number(value) : value,
     }));
   };
 
+  // ✅ Submit form (thêm/sửa)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
       customerID: Number(form.customerID),
       staffID: Number(form.staffID),
-      orderDate: new Date(form.orderDate).toISOString().slice(0, 19), // chuẩn ISO
+      orderDate: new Date(form.orderDate).toISOString().slice(0, 19),
       totalAmount: parseFloat(form.totalAmount),
       status: form.status,
     };
 
     setSaving(true);
+
     try {
       let response;
       if (form.id) {
+        // Sửa
         response = await axios.put(`http://localhost:8080/api/orders/${form.id}`, payload);
       } else {
+        // Thêm mới
         response = await axios.post("http://localhost:8080/api/orders", payload);
       }
 
       if (response.status === 200 || response.status === 201) {
-        alert(form.id ? "Cập nhật thành công 🎉" : "Tạo thành công 🎉");
-        onSaved();
-        onClose();
+        toast.success(form.id ? "Cập nhật thành công 🎉" : "Tạo thành công 🎉");
+        onSaved(); // Gọi hàm reload danh sách bên cha
+        onClose(); // Đóng form
       } else {
-        alert("Tạo/Sửa thất bại");
+        toast.error("Tạo/Sửa thất bại ❌");
       }
     } catch (err) {
       console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
-      alert("Tạo/Sửa thất bại");
-      onClose();
+      toast.error("Tạo/Sửa thất bại ❌");
+      // ⚠️ Không gọi onClose() ở đây — tránh đóng form khi lỗi
     } finally {
       setSaving(false);
     }
@@ -93,6 +102,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
     <div className="modal-backdrop">
       <div className="modal">
         <h3>{form.id ? "Sửa đơn hàng" : "Thêm đơn hàng mới"}</h3>
+
         <form onSubmit={handleSubmit} className="order-form">
           <label>
             Mã khách hàng
@@ -150,7 +160,12 @@ const OrderForm = ({ order, onClose, onSaved }) => {
             <button type="submit" className="btn" disabled={saving}>
               {saving ? "Đang lưu..." : "Lưu"}
             </button>
-            <button type="button" className="btn ghost" onClick={onClose} disabled={saving}>
+            <button
+              type="button"
+              className="btn ghost"
+              onClick={onClose}
+              disabled={saving}
+            >
               Hủy
             </button>
           </div>
