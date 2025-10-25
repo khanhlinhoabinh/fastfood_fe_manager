@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./PromotionSection.css";
 import PromotionForm from "./PromotionForm";
 
@@ -18,7 +21,6 @@ const PromotionSection = () => {
   const pageSize = 5;
   const baseUrl = "http://localhost:8080/api/promotions";
 
-  // ✅ Lấy danh sách khuyến mãi
   const fetchPromotions = async (keyword = "", page = 0) => {
     try {
       let url = "";
@@ -38,6 +40,7 @@ const PromotionSection = () => {
       setCurrentPage(page);
     } catch (err) {
       console.error("❌ Lỗi khi tải danh sách khuyến mãi:", err);
+      toast.error("❌ Không thể tải danh sách khuyến mãi.");
     }
   };
 
@@ -45,31 +48,36 @@ const PromotionSection = () => {
     fetchPromotions();
   }, []);
 
-  // ✅ Tìm kiếm
   const handleSearch = () => {
     fetchPromotions(searchKeyword.trim(), 0);
   };
 
-  // ✅ Xóa khuyến mãi
   const handleDelete = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xoá khuyến mãi này?")) return;
+    const result = await Swal.fire({
+      title: "Bạn có chắc muốn xoá khuyến mãi này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await axios.delete(`${baseUrl}/${id}`);
-      alert("✅ Xóa khuyến mãi thành công!");
+      toast.success(" Xóa khuyến mãi thành công!");
       fetchPromotions(searchKeyword.trim(), currentPage);
     } catch (err) {
-      alert("❌ Không thể xóa khuyến mãi!");
+      toast.error("❌ Không thể xóa khuyến mãi!");
     }
   };
 
-  // ✅ Sửa khuyến mãi
   const handleEdit = (promotion) => {
     setEditingPromotion(promotion);
     setSelectedFunction("edit");
     setShowForm(true);
   };
 
-  // ✅ Phân trang
   const handlePageChange = (page) => {
     if (page >= 0 && page < totalPages) {
       setCurrentPage(page);
@@ -79,9 +87,9 @@ const PromotionSection = () => {
 
   return (
     <div className="promotion-container">
+      <ToastContainer />
       <h1 className="promotion-title">🎁 Danh Sách Khuyến Mãi</h1>
 
-      {/* Nút chức năng */}
       <div className="promotion-buttons">
         <button
           className={selectedFunction === "list" ? "active" : ""}
@@ -101,7 +109,6 @@ const PromotionSection = () => {
         </button>
       </div>
 
-      {/* Nếu là chế độ danh sách */}
       {selectedFunction === "list" && (
         <>
           <div className="search-section">
@@ -192,7 +199,6 @@ const PromotionSection = () => {
               </tbody>
             </table>
 
-            {/* Phân trang */}
             {totalPages > 1 && (
               <div className="pagination">
                 <button

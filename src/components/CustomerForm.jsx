@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./CustomerSection.css";
 
 const CustomerForm = ({ customer, onSave, onCancel }) => {
@@ -28,8 +30,12 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
-      alert("Vui lòng điền đầy đủ thông tin!");
+    if (
+      !formData.name.trim() ||
+      !formData.phone.trim() ||
+      !formData.email.trim()
+    ) {
+      toast.error("⚠️ Vui lòng điền đầy đủ thông tin!");
       return;
     }
 
@@ -39,57 +45,53 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
           `http://localhost:8080/api/customers/${customer.customerID}`,
           formData
         );
-        alert("✅ Cập nhật khách hàng thành công!");
+        toast.success("✅ Cập nhật khách hàng thành công!");
       } else {
         await axios.post("http://localhost:8080/api/customers", formData);
-        alert("✅ Thêm khách hàng mới thành công!");
+        toast.success("✅ Thêm khách hàng mới thành công!");
       }
 
       if (onSave) onSave();
     } catch (err) {
       console.error("❌ Lỗi khi lưu khách hàng:", err);
-      alert("Không thể lưu khách hàng. Vui lòng thử lại!");
+      toast.error("❌ Không thể lưu khách hàng. Vui lòng thử lại!");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="customer-form">
+    <form className="customer-form" onSubmit={handleSubmit}>
       <h3>{customer ? "✏️ Sửa khách hàng" : "➕ Thêm khách hàng mới"}</h3>
 
       <label>Tên khách hàng</label>
       <input
+        type="text"
         name="name"
         value={formData.name}
         onChange={handleChange}
-        placeholder="Tên khách hàng"
-        required
       />
 
       <label>Số điện thoại</label>
       <input
+        type="text"
         name="phone"
         value={formData.phone}
         onChange={handleChange}
-        placeholder="Số điện thoại"
-        required
       />
 
       <label>Email</label>
       <input
+        type="email"
         name="email"
         value={formData.email}
         onChange={handleChange}
-        placeholder="Email"
-        required
       />
 
       <label>Điểm tích lũy</label>
       <input
-        name="loyaltyPoints"
         type="number"
+        name="loyaltyPoints"
         value={formData.loyaltyPoints}
         onChange={handleChange}
-        placeholder="Điểm tích lũy"
       />
 
       <label>Loại thành viên</label>
@@ -98,6 +100,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         value={formData.memberType}
         onChange={handleChange}
       >
+        <option value="Thường">Thường</option>
         <option value="Thân Thiết">Thân Thiết</option>
         <option value="Vãng Lai">Vãng Lai</option>
       </select>

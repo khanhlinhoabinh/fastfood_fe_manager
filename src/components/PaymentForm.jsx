@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./PaymentSection.css";
 
 const PaymentForm = ({ payment, onSave, onCancel }) => {
@@ -39,8 +41,12 @@ const PaymentForm = ({ payment, onSave, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.orderId || !formData.method.trim() || formData.amount <= 0) {
-      alert("⚠️ Vui lòng điền đầy đủ thông tin hợp lệ!");
+    if (
+      !formData.orderId ||
+      !formData.method.trim() ||
+      formData.amount <= 0
+    ) {
+      toast.error("⚠️ Vui lòng điền đầy đủ thông tin hợp lệ!");
       return;
     }
 
@@ -60,71 +66,69 @@ const PaymentForm = ({ payment, onSave, onCancel }) => {
           `http://localhost:8080/api/payments/${payment.paymentID}`,
           payload
         );
-        alert("✅ Cập nhật thanh toán thành công!");
+        toast.success("✅ Cập nhật thanh toán thành công!");
       } else {
         await axios.post("http://localhost:8080/api/payments", payload);
-        alert("✅ Thêm thanh toán mới thành công!");
+        toast.success("✅ Thêm thanh toán mới thành công!");
       }
+
       if (onSave) onSave();
     } catch (err) {
       console.error("❌ Lỗi khi lưu thanh toán:", err);
-      alert("Không thể lưu thanh toán. Vui lòng thử lại!");
+      toast.error("❌ Không thể lưu thanh toán. Vui lòng thử lại!");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="payment-form">
+    <form className="payment-form" onSubmit={handleSubmit}>
       <h3>{payment ? "✏️ Sửa thanh toán" : "➕ Thêm thanh toán mới"}</h3>
 
       <label>Mã đơn (ID)</label>
       <input
-        name="orderId"
         type="number"
+        name="orderId"
         value={formData.orderId}
         onChange={handleChange}
-        placeholder="Nhập ID đơn hàng"
-        required
       />
 
       <label>Phương thức</label>
-      <select name="method" value={formData.method} onChange={handleChange} required>
+      <select name="method" value={formData.method} onChange={handleChange}>
         <option value="">-- Chọn phương thức --</option>
-        <option value="CASH">Tiền mặt</option>
-        <option value="CARD">Thẻ</option>
-        <option value="MOMO">Momo</option>
-        <option value="ZALOPAY">ZaloPay</option>
+        <option value="Tiền mặt">Tiền mặt</option>
+        <option value="Thẻ">Thẻ</option>
+        <option value="Momo">Momo</option>
+        <option value="ZaloPay">ZaloPay</option>
       </select>
 
       <label>Số tiền (₫)</label>
       <input
-        name="amount"
         type="number"
+        name="amount"
         value={formData.amount}
         onChange={handleChange}
-        placeholder="Nhập số tiền"
-        required
       />
 
       <label>Tiền thừa (₫)</label>
       <input
-        name="changeAmount"
         type="number"
+        name="changeAmount"
         value={formData.changeAmount}
         onChange={handleChange}
-        placeholder="Nhập tiền thừa"
       />
 
       <label>Ngày thanh toán</label>
       <input
-        name="paymentDate"
         type="datetime-local"
+        name="paymentDate"
         value={formData.paymentDate}
         onChange={handleChange}
       />
 
       <div className="form-buttons">
         <button type="submit">💾 Lưu</button>
-        <button type="button" onClick={onCancel}>❌ Hủy</button>
+        <button type="button" onClick={onCancel}>
+          ❌ Hủy
+        </button>
       </div>
     </form>
   );

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./CustomerSection.css";
 import axios from "axios";
 import CustomerForm from "./CustomerForm";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 const CustomerSection = () => {
   const [customers, setCustomers] = useState([]);
@@ -10,15 +12,14 @@ const CustomerSection = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [showForm, setShowForm] = useState(false);           // ✅ thêm
+  const [showForm, setShowForm] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
-  const [sortField, setSortField] = useState(""); // ✅ tiêu chí sắp xếp
-  const [sortOrder, setSortOrder] = useState(""); // ✅ thứ tự sắp xếp
-  const [showSortOptions, setShowSortOptions] = useState(false); // ✅ toggle dropdown
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const [showSortOptions, setShowSortOptions] = useState(false);
 
   const pageSize = 5;
 
-  // ✅ Hàm đổi trang
   const handlePageChange = (page) => {
     if (page >= 0 && page < totalPages) {
       setCurrentPage(page);
@@ -26,30 +27,23 @@ const CustomerSection = () => {
     }
   };
 
-  // ✅ Hàm lấy danh sách khách hàng (có phân trang + tìm kiếm)
-  
-const fetchCustomers = async (keyword = "", page = 0) => {
+  const fetchCustomers = async (keyword = "", page = 0) => {
     try {
       const url = keyword.trim()
         ? `http://localhost:8080/api/customers/search?keyword=${keyword}`
         : `http://localhost:8080/api/customers/page?page=${page}&size=${pageSize}`;
-
       const res = await axios.get(url);
       let data = res.data;
-
       let customerList = keyword.trim()
         ? Array.isArray(data) ? data : []
         : Array.isArray(data.content) ? data.content : [];
 
-      // ✅ Áp dụng sắp xếp nếu có lựa chọn
       if (sortField && sortOrder) {
         customerList.sort((a, b) => {
           let valA = a[sortField];
           let valB = b[sortField];
-
           if (typeof valA === "string") valA = valA.toLowerCase();
           if (typeof valB === "string") valB = valB.toLowerCase();
-
           if (valA < valB) return sortOrder === "asc" ? -1 : 1;
           if (valA > valB) return sortOrder === "asc" ? 1 : -1;
           return 0;
@@ -61,50 +55,53 @@ const fetchCustomers = async (keyword = "", page = 0) => {
       setCurrentPage(keyword.trim() ? 0 : page);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách khách hàng:", err);
+      toast.error("❌ Không thể tải danh sách khách hàng.");
       setCustomers([]);
     }
   };
-
 
   useEffect(() => {
     fetchCustomers();
   }, []);
 
-  // ✅ Hàm tìm kiếm
   const handleSearch = () => {
-    if (searchKeyword.trim() === "") {
-      fetchCustomers("", 0);
-    } else {
-      fetchCustomers(searchKeyword.trim(), 0);
-    }
+    fetchCustomers(searchKeyword.trim(), 0);
   };
 
-  // ✅ Hàm xoá khách hàng
   const handleDelete = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa khách hàng này?")) return;
+    const result = await Swal.fire({
+      title: "Bạn có chắc muốn xoá khách hàng này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await axios.delete(`http://localhost:8080/api/customers/${id}`);
-      alert("Xóa khách hàng thành công!");
+      toast.success("✅ Xóa khách hàng thành công!");
       fetchCustomers(searchKeyword.trim(), currentPage);
     } catch (err) {
       console.error("Lỗi khi xóa khách hàng:", err);
-      alert("Không thể xóa khách hàng. Vui lòng thử lại!");
+      toast.error("❌ Không thể xóa khách hàng. Vui lòng thử lại!");
     }
   };
-  // ✅ Hàm sửa khách hàng
+
   const handleEdit = (customer) => {
     setEditingCustomer(customer);
     setSelectedFunction("edit");
     setShowForm(true);
   };
-  
-const handleSortChange = () => {
+
+  const handleSortChange = () => {
     fetchCustomers(searchKeyword.trim(), 0);
   };
 
-
   return (
     <div className="customer-container">
+      <ToastContainer />
       <h1 className="customer-title">👥 Danh Sách Khách Hàng</h1>
 
       <div className="customer-function-buttons">
@@ -115,23 +112,19 @@ const handleSortChange = () => {
           Danh sách khách hàng
         </button>
         <button
-  className={selectedFunction === "add" ? "active" : ""}
-  onClick={() => {
-    setSelectedFunction("add"); // ✅ chuyển chế độ sang form
-    setShowForm(true);
-    setEditingCustomer(null);
-  }}
->
-   Thêm khách hàng mới
-</button>
-
-
+          className={selectedFunction === "add" ? "active" : ""}
+          onClick={() => {
+            setSelectedFunction("add");
+            setShowForm(true);
+            setEditingCustomer(null);
+          }}
+        >
+          Thêm khách hàng mới
+        </button>
       </div>
 
       {selectedFunction === "list" && (
         <>
-          
-{/* ✅ Thanh tìm kiếm + sắp xếp */}
           <div className="search-section">
             <input
               type="text"
@@ -143,15 +136,12 @@ const handleSortChange = () => {
             <button onClick={handleSearch} className="search-button">
               Tìm kiếm
             </button>
-
-            {/* ✅ Icon sắp xếp */}
             <button
               className="sort-icon-button"
               onClick={() => setShowSortOptions(!showSortOptions)}
             >
               ⚙️ Sắp xếp
             </button>
-
             {showSortOptions && (
               <div className="sort-options">
                 <select
@@ -175,8 +165,6 @@ const handleSortChange = () => {
             )}
           </div>
 
-
-          {/* ✅ Bảng khách hàng */}
           <div className="customer-table-section">
             <h2>📋 Thông tin khách hàng</h2>
             <table className="customer-table">
@@ -227,7 +215,6 @@ const handleSortChange = () => {
               </tbody>
             </table>
 
-            {/* 🔹 PHÂN TRANG */}
             {totalPages > 1 && (
               <div className="pagination">
                 <button
@@ -236,7 +223,6 @@ const handleSortChange = () => {
                 >
                   ⬅ Trước
                 </button>
-
                 {Array.from({ length: totalPages }, (_, index) => (
                   <button
                     key={index}
@@ -246,7 +232,6 @@ const handleSortChange = () => {
                     {index + 1}
                   </button>
                 ))}
-
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages - 1}
@@ -258,22 +243,24 @@ const handleSortChange = () => {
           </div>
         </>
       )}
-      {(selectedFunction === "add" || selectedFunction === "edit") && showForm && (
-  <CustomerForm
-    customer={editingCustomer}
-    onSave={() => {
-      setShowForm(false);
-      setEditingCustomer(null);
-      setSelectedFunction("list"); // ✅ quay lại danh sách sau khi lưu
-      fetchCustomers(searchKeyword.trim(), currentPage);
-    }}
-    onCancel={() => {
-      setShowForm(false);
-      setEditingCustomer(null);
-      setSelectedFunction("list"); // ✅ quay lại danh sách nếu hủy
-    }}
-  />
-)}
+
+      {(selectedFunction === "add" || selectedFunction === "edit") &&
+        showForm && (
+          <CustomerForm
+            customer={editingCustomer}
+            onSave={() => {
+              setShowForm(false);
+              setEditingCustomer(null);
+              setSelectedFunction("list");
+              fetchCustomers(searchKeyword.trim(), currentPage);
+            }}
+            onCancel={() => {
+              setShowForm(false);
+              setEditingCustomer(null);
+              setSelectedFunction("list");
+            }}
+          />
+        )}
     </div>
   );
 };
