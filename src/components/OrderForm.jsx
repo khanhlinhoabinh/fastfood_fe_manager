@@ -3,12 +3,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./OrderSection.css";
+
 // ✅ Lấy giờ địa phương hiện tại
 const getLocalDateTime = () => {
   const now = new Date();
   const offset = now.getTimezoneOffset();
   const local = new Date(now.getTime() - offset * 60000);
-  return local.toISOString().slice(0, 16); // yyyy-MM-ddTHH:mm
+  return local.toISOString().slice(0, 16);
 };
 
 const OrderForm = ({ order, onClose, onSaved }) => {
@@ -19,9 +20,30 @@ const OrderForm = ({ order, onClose, onSaved }) => {
     totalAmount: 0,
     status: "Chưa thanh toán",
   });
-  const [saving, setSaving] = useState(false);
 
-  // ✅ Khi chỉnh sửa thì load dữ liệu sẵn vào form
+  const [saving, setSaving] = useState(false);
+  const [customers, setCustomers] = useState([]); // 🧩 danh sách KH
+  const [staffList, setStaffList] = useState([]); // 🧩 danh sách nhân viên
+
+  // ✅ Gọi API load KH & NV khi mở form
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [resCus, resStaff] = await Promise.all([
+          axios.get("http://localhost:8080/api/customers"),
+          axios.get("http://localhost:8080/api/staff"),
+        ]);
+        setCustomers(resCus.data);
+        setStaffList(resStaff.data);
+      } catch (error) {
+        console.error("❌ Lỗi khi tải dữ liệu dropdown:", error);
+        toast.error("Không thể tải danh sách KH/NV");
+      }
+    };
+    fetchData();
+  }, []);
+
+  // ✅ Khi chỉnh sửa thì load dữ liệu sẵn
   useEffect(() => {
     if (order) {
       const d = order.orderDate ? new Date(order.orderDate) : new Date();
@@ -58,7 +80,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
     }));
   };
 
-  // ✅ Submit form (thêm/sửa)
+  // ✅ Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,28 +93,27 @@ const OrderForm = ({ order, onClose, onSaved }) => {
     };
 
     setSaving(true);
-
     try {
       let response;
       if (form.id) {
-        // Sửa
-        response = await axios.put(`http://localhost:8080/api/orders/${form.id}`, payload);
+        response = await axios.put(
+          `http://localhost:8080/api/orders/${form.id}`,
+          payload
+        );
       } else {
-        // Thêm mới
         response = await axios.post("http://localhost:8080/api/orders", payload);
       }
 
       if (response.status === 200 || response.status === 201) {
-        toast.success(form.id ? "Cập nhật thành công" : "Tạo thành công");
-        onSaved(); // Gọi hàm reload danh sách bên cha
-        onClose(); // Đóng form
+        toast.success(form.id ? "✅ Cập nhật thành công" : "🎉 Tạo đơn hàng thành công!");
+        onSaved();
+        onClose();
       } else {
-        toast.error("Tạo/Sửa thất bại ");
+        toast.error("⚠️ Tạo/Sửa thất bại");
       }
     } catch (err) {
       console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
-      toast.error("Tạo/Sửa thất bại");
-      // ⚠️ Không gọi onClose() ở đây — tránh đóng form khi lỗi
+      toast.error("❌ Tạo/Sửa thất bại");
     } finally {
       setSaving(false);
     }
@@ -102,24 +123,39 @@ const OrderForm = ({ order, onClose, onSaved }) => {
     <form className="customer-form" onSubmit={handleSubmit}>
       <h3>{form.id ? "✏️ Sửa đơn hàng" : "➕ Thêm đơn hàng mới"}</h3>
 
+      {/* --- Dropdown Mã khách hàng --- */}
       <label>Mã khách hàng</label>
-      <input
-        type="number"
+      <select
         name="customerID"
         value={form.customerID}
         onChange={handleChange}
         required
-      />
+      >
+        <option value="">-- Chọn mã khách hàng --</option>
+        {customers.map((c) => (
+          <option key={c.customerID} value={c.customerID}>
+            {c.customerID} - {c.name}
+          </option>
+        ))}
+      </select>
 
+      {/* --- Dropdown Mã nhân viên --- */}
       <label>Mã nhân viên</label>
-      <input
-        type="number"
+      <select
         name="staffID"
         value={form.staffID}
         onChange={handleChange}
         required
-      />
+      >
+        <option value="">-- Chọn mã nhân viên --</option>
+        {staffList.map((s) => (
+          <option key={s.staffID} value={s.staffID}>
+            {s.staffID} - {s.name}
+          </option>
+        ))}
+      </select>
 
+      {/* --- Ngày đặt --- */}
       <label>Ngày giờ đặt</label>
       <input
         type="datetime-local"
@@ -129,6 +165,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         required
       />
 
+      {/* --- Tổng tiền --- */}
       <label>Tổng tiền (₫)</label>
       <input
         type="number"
@@ -139,6 +176,7 @@ const OrderForm = ({ order, onClose, onSaved }) => {
         required
       />
 
+      {/* --- Trạng thái --- */}
       <label>Trạng thái</label>
       <select name="status" value={form.status} onChange={handleChange}>
         <option value="Đã thanh toán">Đã thanh toán</option>
