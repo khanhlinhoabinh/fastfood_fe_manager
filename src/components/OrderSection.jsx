@@ -3,6 +3,7 @@ import axios from "axios";
 import OrderForm from "./OrderForm";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
 import "./OrderSection.css";
 
 const OrderSection = () => {
@@ -96,7 +97,14 @@ const OrderSection = () => {
   // 4️⃣ Xóa đơn hàng
   // =========================
   const handleDelete = async (id) => {
-    if (window.confirm("Bạn có chắc muốn xoá đơn hàng này?")) {
+    const result = await Swal.fire({
+          title: "Bạn có chắc muốn xoá đơn hàng này?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Xóa",
+          cancelButtonText: "Hủy",
+        });
+    if (result.isConfirmed) {
       try {
         await axios.delete(`http://localhost:8080/api/orders/${id}`);
         toast.success("Xoá đơn hàng thành công!");
