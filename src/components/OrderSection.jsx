@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import OrderForm from "./OrderForm";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 import "./OrderSection.css";
 
 const OrderSection = () => {
@@ -49,6 +51,7 @@ const OrderSection = () => {
     }
   } catch (err) {
     console.error("❌ Lỗi khi lấy danh sách đơn hàng:", err);
+    toast.error("Lỗi khi lấy danh sách đơn hàng ❌");
     setOrders([]);
   }
 };
@@ -85,6 +88,7 @@ const OrderSection = () => {
       setCurrentPage(0);
     } catch (error) {
       console.error("Lỗi khi tìm kiếm:", error);
+      toast.error("❌ Lỗi khi tìm kiếm đơn hàng.");
     }
   };
 
@@ -95,11 +99,11 @@ const OrderSection = () => {
     if (window.confirm("Bạn có chắc muốn xoá đơn hàng này?")) {
       try {
         await axios.delete(`http://localhost:8080/api/orders/${id}`);
-        alert("🗑️ Xóa thành công");
+        toast.success("Xoá đơn hàng thành công!");
         fetchOrdersPaged(currentPage);
       } catch (error) {
         console.error("Lỗi khi xoá:", error);
-        alert("❌ Xóa thất bại");
+        toast.error("Xóa thất bại");
       }
     }
   };
@@ -118,6 +122,7 @@ const OrderSection = () => {
   // =========================
   return (
     <div className="order-container">
+      <ToastContainer />
       <h2 className="order-title">📦 Danh sách đơn hàng</h2>
 
       {/* --- Nút chức năng --- */}
@@ -270,6 +275,7 @@ const OrderSection = () => {
 />
 
       )}
+
     </div>
   );
 };

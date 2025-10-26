@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import "./OrderSection.css";
 // ✅ Lấy giờ địa phương hiện tại
 const getLocalDateTime = () => {
   const now = new Date();
@@ -83,15 +83,15 @@ const OrderForm = ({ order, onClose, onSaved }) => {
       }
 
       if (response.status === 200 || response.status === 201) {
-        toast.success(form.id ? "Cập nhật thành công 🎉" : "Tạo thành công 🎉");
+        toast.success(form.id ? "Cập nhật thành công" : "Tạo thành công");
         onSaved(); // Gọi hàm reload danh sách bên cha
         onClose(); // Đóng form
       } else {
-        toast.error("Tạo/Sửa thất bại ❌");
+        toast.error("Tạo/Sửa thất bại ");
       }
     } catch (err) {
       console.error("❌ Lỗi khi tạo/sửa đơn hàng:", err);
-      toast.error("Tạo/Sửa thất bại ❌");
+      toast.error("Tạo/Sửa thất bại");
       // ⚠️ Không gọi onClose() ở đây — tránh đóng form khi lỗi
     } finally {
       setSaving(false);
