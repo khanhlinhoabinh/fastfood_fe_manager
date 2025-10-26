@@ -182,6 +182,7 @@ const handleEdit = (item) => {
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Ảnh</th>
                   <th>Tên món</th>
                   <th>Loại</th>
                   <th>Giá (₫)</th>
@@ -196,6 +197,17 @@ const handleEdit = (item) => {
                   menuItems.map((item) => (
                     <tr key={item.menuItemID}>
                       <td>{item.menuItemID}</td>
+                      <td>
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            style={{ width: "60px", height: "60px", borderRadius: "6px", objectFit: "cover" }}
+                          />
+                        ) : (
+                          <span style={{ color: "#999" }}>Không có ảnh</span>
+                        )}
+                      </td>
                       <td>{item.name}</td>
                       <td>{item.category}</td>
                       <td>{item.price?.toLocaleString()}</td>

@@ -13,13 +13,43 @@ const MenuForm = ({ menuItem, onSave, onCancel }) => {
     description: "",
     stockQuantity: 0,
     prepTime: 0,
+    image: "",
   });
+  const [uploading, setUploading] = useState(false); // ✅ trạng thái upload ảnh
 
   useEffect(() => {
     if (menuItem) {
       setFormData(menuItem);
     }
   }, [menuItem]);
+
+  // ✅ upload ảnh lên Cloudinary
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("upload_preset", "unsigned_preset"); // 🔹 preset bạn tạo trong Cloudinary
+    form.append("cloud_name", "dgd12qk9s"); // 🔹 thay bằng cloud_name của bạn
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dgd12qk9s/image/upload",
+        { method: "POST", body: form }
+      );
+      const data = await res.json();
+      setFormData((prev) => ({ ...prev, image: data.secure_url }));
+      toast.success("📸 Ảnh đã được tải lên!");
+    } catch (err) {
+      console.error("Upload ảnh lỗi:", err);
+      toast.error("❌ Không thể upload ảnh!");
+    } finally {
+      setUploading(false);
+    }
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,6 +145,20 @@ const MenuForm = ({ menuItem, onSave, onCancel }) => {
         onChange={handleChange}
         placeholder="Thời gian chuẩn bị"
       />
+
+      {/* ✅ Upload ảnh */}
+      <label>Ảnh món ăn</label>
+      <input type="file" accept="image/*" onChange={handleImageUpload} />
+      {uploading && <p>⏳ Đang tải ảnh lên...</p>}
+      {formData.image && (
+        <div className="image-preview">
+          <img
+            src={formData.image}
+            alt="Preview"
+            style={{ width: "150px", borderRadius: "8px", marginTop: "8px" }}
+          />
+        </div>
+      )}
 
       <div className="form-buttons">
         <button type="submit">💾 Lưu</button>
