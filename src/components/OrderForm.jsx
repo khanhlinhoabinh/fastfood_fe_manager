@@ -99,79 +99,62 @@ const OrderForm = ({ order, onClose, onSaved }) => {
   };
 
   return (
-    <div className="modal-backdrop">
-      <div className="modal">
-        <h3>{form.id ? "Sửa đơn hàng" : "Thêm đơn hàng mới"}</h3>
+    <form className="customer-form" onSubmit={handleSubmit}>
+      <h3>{form.id ? "✏️ Sửa đơn hàng" : "➕ Thêm đơn hàng mới"}</h3>
 
-        <form onSubmit={handleSubmit} className="order-form">
-          <label>
-            Mã khách hàng
-            <input
-              name="customerID"
-              value={form.customerID}
-              onChange={handleChange}
-              required
-            />
-          </label>
+      <label>Mã khách hàng</label>
+      <input
+        type="number"
+        name="customerID"
+        value={form.customerID}
+        onChange={handleChange}
+        required
+      />
 
-          <label>
-            Mã nhân viên
-            <input
-              name="staffID"
-              value={form.staffID}
-              onChange={handleChange}
-              required
-            />
-          </label>
+      <label>Mã nhân viên</label>
+      <input
+        type="number"
+        name="staffID"
+        value={form.staffID}
+        onChange={handleChange}
+        required
+      />
 
-          <label>
-            Ngày giờ đặt
-            <input
-              name="orderDate"
-              type="datetime-local"
-              value={form.orderDate}
-              onChange={handleChange}
-              required
-            />
-          </label>
+      <label>Ngày giờ đặt</label>
+      <input
+        type="datetime-local"
+        name="orderDate"
+        value={form.orderDate}
+        onChange={handleChange}
+        required
+      />
 
-          <label>
-            Tổng tiền (₫)
-            <input
-              name="totalAmount"
-              type="number"
-              min="0"
-              value={form.totalAmount}
-              onChange={handleChange}
-              required
-            />
-          </label>
+      <label>Tổng tiền (₫)</label>
+      <input
+        type="number"
+        name="totalAmount"
+        min="0"
+        value={form.totalAmount}
+        onChange={handleChange}
+        required
+      />
 
-          <label>
-            Trạng thái
-            <select name="status" value={form.status} onChange={handleChange}>
-              <option value="Đã thanh toán">Đã thanh toán</option>
-              <option value="Chưa thanh toán">Chưa thanh toán</option>
-              <option value="Đang xử lý">Đang xử lý</option>
-            </select>
-          </label>
+      <label>Trạng thái</label>
+      <select name="status" value={form.status} onChange={handleChange}>
+        <option value="Đã thanh toán">Đã thanh toán</option>
+        <option value="Chưa thanh toán">Chưa thanh toán</option>
+        <option value="Đang xử lý">Đang xử lý</option>
+      </select>
 
-          <div className="form-actions">
-            <button type="submit" className="btn" disabled={saving}>
-              {saving ? "Đang lưu..." : "Lưu"}
-            </button>
-            <button
-              type="button"
-              className="btn ghost"
-              onClick={onClose}
-              disabled={saving}
-            >
-              Hủy
-            </button>
-          </div>
-        </form>
+      <div className="form-buttons">
+        <button type="submit" disabled={saving}>
+          💾 {saving ? "Đang lưu..." : "Lưu"}
+        </button>
+        <button type="button" onClick={onClose} disabled={saving}>
+          ❌ Hủy
+        </button>
       </div>
-    </div>
+    </form>
   );
 };
 
