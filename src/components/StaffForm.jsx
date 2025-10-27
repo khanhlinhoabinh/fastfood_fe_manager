@@ -46,15 +46,16 @@ const StaffForm = ({ staff, onSave, onCancel }) => {
     <form onSubmit={handleSubmit} className="staff-form">
       <h3>{staff ? "✏️ Sửa nhân viên" : "➕ Thêm nhân viên mới"}</h3>
 
+      <label>Tên nhân viên</label>
       <input
+        type="text"
         name="name"
         value={formData.name}
         onChange={handleChange}
-        placeholder="Tên nhân viên"
-        required
       />
 
-      <select name="position" value={formData.position} onChange={handleChange} required>
+      <label>Chức vụ</label>
+      <select name="position" value={formData.position} onChange={handleChange}>
         <option value="">-- Chọn chức vụ --</option>
         <option value="Nhân viên">Nhân viên</option>
         <option value="Quản lý">Quản lý</option>
@@ -63,7 +64,8 @@ const StaffForm = ({ staff, onSave, onCancel }) => {
         <option value="Bếp trưởng">Bếp trưởng</option>
       </select>
 
-      <select name="shift" value={formData.shift} onChange={handleChange} required>
+      <label>Ca làm việc</label>
+      <select name="shift" value={formData.shift} onChange={handleChange}>
         <option value="">-- Chọn ca làm việc --</option>
         <option value="Sáng">Sáng</option>
         <option value="Chiều">Chiều</option>
@@ -71,13 +73,12 @@ const StaffForm = ({ staff, onSave, onCancel }) => {
         <option value="Fulltime">Fulltime</option>
       </select>
 
+      <label>Lương</label>
       <input
-        name="salary"
         type="number"
+        name="salary"
         value={formData.salary}
         onChange={handleChange}
-        placeholder="Lương"
-        required
       />
 
       <div className="form-buttons">
