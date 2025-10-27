@@ -24,6 +24,8 @@ const OrderSection = () => {
 
   // --- Tìm kiếm ---
   const [searchCustomerID, setSearchCustomerID] = useState("");
+  const [searchStartDate, setSearchStartDate] = useState("");
+  const [searchEndDate, setSearchEndDate] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
 
   // =========================
@@ -81,6 +83,8 @@ const OrderSection = () => {
       const response = await axios.get("http://localhost:8080/api/orders/search", {
         params: {
           customerID: searchCustomerID || null,
+          startDate: searchStartDate ||null,
+          endDate: searchEndDate || null,
           status: searchStatus || null,
         },
       });
@@ -89,7 +93,7 @@ const OrderSection = () => {
       setCurrentPage(0);
     } catch (error) {
       console.error("Lỗi khi tìm kiếm:", error);
-      toast.error("❌ Lỗi khi tìm kiếm đơn hàng.");
+      toast.error(" Lỗi khi tìm kiếm đơn hàng.");
     }
   };
 
@@ -165,6 +169,24 @@ const OrderSection = () => {
           value={searchCustomerID}
           onChange={(e) => setSearchCustomerID(e.target.value)}
         />
+        <input
+          type="date"
+          value={searchStartDate}
+          onChange={(e) => setSearchStartDate(e.target.value)}
+        />
+        <input
+          type="date"
+          value={searchEndDate}
+          onChange={(e) => setSearchEndDate(e.target.value)}
+        />
+        <select
+          value= {searchStatus}
+          onChange={(e) => setSearchStatus(e.target.value)}
+        >
+          <option value="">-- Trạng thái --</option>
+          <option value="Chưa thanh toán">Chưa thanh toán</option>
+          <option value="Đã thanh toán">Đã thanh toán</option>
+        </select>  
         <button onClick={handleSearch}>Tìm kiếm</button>
         <button
           className="sort-icon-button"
