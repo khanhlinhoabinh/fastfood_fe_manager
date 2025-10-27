@@ -229,3 +229,14 @@
 .sort-options button:hover {
   background-color: #388e3c;
 }
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+.input-error {
+  border-color: red;
+}
+
