@@ -45,6 +45,12 @@
   margin-bottom: 15px;
   flex-wrap: wrap;
 }
+.order-search select {
+  width: 180px; /* hoặc 100% nếu muốn chiếm toàn bộ chiều rộng */
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+}
 
 .search-input {
   padding: 8px 12px;
@@ -269,10 +275,4 @@
 .btn.ghost {
   background: transparent;
   border: 1px solid #ddd;
-}
-.order-search select {
-  width: 180px; /* hoặc 100% nếu muốn chiếm toàn bộ chiều rộng */
-  padding: 8px;
-  font-size: 14px;
-  border-radius: 4px;
 }

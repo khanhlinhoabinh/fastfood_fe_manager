@@ -162,6 +162,7 @@ const OrderSection = () => {
       </div>
 
       {/* --- Thanh tìm kiếm --- */}
+      {selectedFunction === "list" && (
       <div className="order-search">
         <input
           type="number"
@@ -188,6 +189,7 @@ const OrderSection = () => {
           <option value="Đã thanh toán">Đã thanh toán</option>
         </select>  
         <button onClick={handleSearch}>Tìm kiếm</button>
+
         <button
           className="sort-icon-button"
           onClick={() => setShowSortOptions(!showSortOptions)}
@@ -195,8 +197,8 @@ const OrderSection = () => {
           ⚙️ Sắp xếp
         </button>
       </div>
-
-      {showSortOptions && (
+      )}
+        {selectedFunction === "list" && showSortOptions && (
         <div className="sort-options">
           <select value={sortField} onChange={(e) => setSortField(e.target.value)}>
             <option value="orderDate">Ngày đặt</option>
@@ -209,7 +211,6 @@ const OrderSection = () => {
           <button onClick={() => fetchOrdersPaged(0)}>Áp dụng</button>
         </div>
       )}
-
       {/* --- Bảng danh sách --- */}
       {selectedFunction === "list" && (
         <div className="order-table-section">
