@@ -181,7 +181,6 @@ const OrderForm = ({ order, onClose, onSaved }) => {
       <select name="status" value={form.status} onChange={handleChange}>
         <option value="Đã thanh toán">Đã thanh toán</option>
         <option value="Chưa thanh toán">Chưa thanh toán</option>
-        <option value="Đang xử lý">Đang xử lý</option>
       </select>
 
       <div className="form-buttons">
