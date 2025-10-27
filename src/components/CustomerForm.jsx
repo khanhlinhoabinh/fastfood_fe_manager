@@ -35,10 +35,17 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
       else delete newErrors.name;
     }
 
+    
     if (name === "phone") {
-      if (!value.trim()) newErrors.phone = "Số điện thoại không được để trống";
-      else delete newErrors.phone;
-    }
+        if (!value.trim()) {
+          newErrors.phone = "Số điện thoại không được để trống";
+        } else if (!/^0\d{9}$/.test(value)) {
+          newErrors.phone = "Số điện thoại phải bắt đầu bằng 0 và đủ 10 số";
+        } else {
+          delete newErrors.phone;
+        }
+      }
+
 
     if (name === "email") {
       if (!value.trim()) newErrors.email = "Email không được để trống";
