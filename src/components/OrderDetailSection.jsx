@@ -99,14 +99,15 @@ const OrderDetailSection = () => {
           setEditingOrderDetail(null);
         }}>➕ Thêm mới</button>
       </div>
-
+      {selectedFunction === "list" && (
       <div className="order-search">
         <input type="text" placeholder="🔍 Tìm theo mã đơn hoặc mã món..." value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
         <button onClick={handleSearch}>Tìm kiếm</button>
         <button className="sort-icon-button" onClick={() => setShowSortOptions(!showSortOptions)}>⚙️ Sắp xếp</button>
       </div>
+      )}
 
-      {showSortOptions && (
+      {selectedFunction === "list" && showSortOptions && (
         <div className="sort-options">
           <select value={sortField} onChange={(e) => setSortField(e.target.value)}>
             <option value="menuItemID">Mã món</option>
