@@ -13,6 +13,21 @@ const PaymentForm = ({ payment, onSave, onCancel }) => {
     paymentDate: "",
   });
 
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/orders");
+      setOrders(res.data);
+    } catch (error) {
+      console.error("❌ Lỗi khi tải danh sách đơn hàng:", error);
+      toast.error("Không thể tải danh sách đơn hàng");
+    }
+  };
+  fetchOrders();
+}, []);
+
   useEffect(() => {
     if (payment) {
       setFormData({
@@ -83,13 +98,20 @@ const PaymentForm = ({ payment, onSave, onCancel }) => {
     <form className="payment-form" onSubmit={handleSubmit}>
       <h3>{payment ? "✏️ Sửa thanh toán" : "➕ Thêm thanh toán mới"}</h3>
 
-      <label>Mã đơn (ID)</label>
-      <input
-        type="number"
+      <label>Mã đơn hàng</label>
+      <select
         name="orderId"
         value={formData.orderId}
         onChange={handleChange}
-      />
+        required
+      >
+        <option value="">-- Chọn đơn hàng --</option>
+        {orders.map((o) => (
+          <option key={o.orderID} value={o.orderID}>
+            {o.orderID} - KH: {o.customerID}
+          </option>
+        ))}
+      </select>
 
       <label>Phương thức</label>
       <select name="method" value={formData.method} onChange={handleChange}>
