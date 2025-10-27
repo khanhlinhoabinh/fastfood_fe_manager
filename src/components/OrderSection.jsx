@@ -12,60 +12,49 @@ const OrderSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
 
-  // --- Phân trang ---
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const pageSize = 10;
 
-  // --- Sắp xếp ---
   const [sortField, setSortField] = useState("orderDate");
   const [sortOrder, setSortOrder] = useState("desc");
   const [showSortOptions, setShowSortOptions] = useState(false);
 
-  // --- Tìm kiếm ---
   const [searchCustomerID, setSearchCustomerID] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
 
-  // =========================
-  // 1️⃣ Lấy danh sách có phân trang
-  // =========================
   const fetchOrdersPaged = async (page = 0) => {
-  try {
-    const res = await axios.get("http://localhost:8080/api/orders/paged", {
-      params: {
-        page,
-        size: pageSize,
-        sortBy: sortField,
-        direction: sortOrder,
-      },
-    });
+    try {
+      const res = await axios.get("http://localhost:8080/api/orders/paged", {
+        params: {
+          page,
+          size: pageSize,
+          sortBy: sortField,
+          direction: sortOrder,
+        },
+      });
 
-    const data = res.data;
-    if (data && Array.isArray(data.content)) {
-      setOrders(data.content);
-      setTotalPages(data.totalPages);
-      setCurrentPage(data.number);
-    } else {
+      const data = res.data;
+      if (data && Array.isArray(data.content)) {
+        setOrders(data.content);
+        setTotalPages(data.totalPages);
+        setCurrentPage(data.number);
+      } else {
+        setOrders([]);
+        setTotalPages(1);
+        setCurrentPage(0);
+      }
+    } catch (err) {
+      console.error("❌ Lỗi khi lấy danh sách đơn hàng:", err);
+      toast.error("Lỗi khi lấy danh sách đơn hàng ❌");
       setOrders([]);
-      setTotalPages(1);
-      setCurrentPage(0);
     }
-  } catch (err) {
-    console.error("❌ Lỗi khi lấy danh sách đơn hàng:", err);
-    toast.error("Lỗi khi lấy danh sách đơn hàng ❌");
-    setOrders([]);
-  }
-};
+  };
 
-
-  // --- Gọi khi load lần đầu ---
   useEffect(() => {
     fetchOrdersPaged();
   }, []);
 
-  // =========================
-  // 2️⃣ Chuyển trang
-  // =========================
   const handlePageChange = (page) => {
     if (page >= 0 && page < totalPages) {
       setCurrentPage(page);
@@ -73,9 +62,6 @@ const OrderSection = () => {
     }
   };
 
-  // =========================
-  // 3️⃣ Tìm kiếm đơn hàng theo CustomerID + Status
-  // =========================
   const handleSearch = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/orders/search", {
@@ -85,7 +71,7 @@ const OrderSection = () => {
         },
       });
       setOrders(response.data);
-      setTotalPages(1); // tìm kiếm không phân trang
+      setTotalPages(1);
       setCurrentPage(0);
     } catch (error) {
       console.error("Lỗi khi tìm kiếm:", error);
@@ -93,17 +79,14 @@ const OrderSection = () => {
     }
   };
 
-  // =========================
-  // 4️⃣ Xóa đơn hàng
-  // =========================
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-          title: "Bạn có chắc muốn xoá đơn hàng này?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Xóa",
-          cancelButtonText: "Hủy",
-        });
+      title: "Bạn có chắc muốn xoá đơn hàng này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
     if (result.isConfirmed) {
       try {
         await axios.delete(`http://localhost:8080/api/orders/${id}`);
@@ -116,25 +99,18 @@ const OrderSection = () => {
     }
   };
 
-  // =========================
-  // 5️⃣ Mở form thêm/sửa
-  // =========================
   const handleEdit = (order) => {
     setEditingOrder(order);
     setShowForm(true);
     setSelectedFunction("edit");
   };
 
-  // =========================
-  // 6️⃣ Giao diện chính
-  // =========================
   return (
-    <div className="order-container">
+    <div className="staff-container">
       <ToastContainer />
-      <h2 className="order-title">📦 Danh sách đơn hàng</h2>
+      <h2 className="staff-title">📦 ĐƠN HÀNG 📦</h2>
 
-      {/* --- Nút chức năng --- */}
-      <div className="order-function-buttons">
+      <div className="staff-function-buttons">
         <button
           className={selectedFunction === "list" ? "active" : ""}
           onClick={() => {
@@ -143,7 +119,7 @@ const OrderSection = () => {
             fetchOrdersPaged();
           }}
         >
-          📄 Danh sách
+          Danh sách đơn hàng
         </button>
         <button
           className={selectedFunction === "add" ? "active" : ""}
@@ -153,12 +129,11 @@ const OrderSection = () => {
             setEditingOrder(null);
           }}
         >
-          ➕ Thêm mới
+          Thêm mới
         </button>
       </div>
 
-      {/* --- Thanh tìm kiếm --- */}
-      <div className="order-search">
+      <div className="search-section">
         <input
           type="number"
           placeholder="🔍 Nhập mã khách hàng..."
@@ -170,7 +145,7 @@ const OrderSection = () => {
           className="sort-icon-button"
           onClick={() => setShowSortOptions(!showSortOptions)}
         >
-          ⚙️ Sắp xếp
+          Sắp xếp
         </button>
       </div>
 
@@ -188,10 +163,9 @@ const OrderSection = () => {
         </div>
       )}
 
-      {/* --- Bảng danh sách --- */}
       {selectedFunction === "list" && (
-        <div className="order-table-section">
-          <table className="order-table">
+        <div className="staff-table-section">
+          <table className="staff-table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -216,7 +190,7 @@ const OrderSection = () => {
                         ✏️ Sửa
                       </button>
                       <button
-                        className="delete-btn"
+                        className="delete-button"
                         onClick={() => handleDelete(order.orderID)}
                       >
                         ❌ Xoá
@@ -234,7 +208,6 @@ const OrderSection = () => {
             </tbody>
           </table>
 
-          {/* ✅ PHÂN TRANG */}
           {totalPages > 1 && (
             <div className="pagination">
               <button
@@ -265,25 +238,22 @@ const OrderSection = () => {
         </div>
       )}
 
-      {/* --- Form thêm/sửa --- */}
       {(selectedFunction === "add" || selectedFunction === "edit") && showForm && (
         <OrderForm
-  order={editingOrder}
-  onSaved={() => {
-    setShowForm(false);
-    setEditingOrder(null);
-    setSelectedFunction("list");
-    fetchOrdersPaged(currentPage); // reload danh sách
-  }}
-  onClose={() => {
-    setShowForm(false);
-    setEditingOrder(null);
-    setSelectedFunction("list");
-  }}
-/>
-
+          order={editingOrder}
+          onSaved={() => {
+            setShowForm(false);
+            setEditingOrder(null);
+            setSelectedFunction("list");
+            fetchOrdersPaged(currentPage);
+          }}
+          onClose={() => {
+            setShowForm(false);
+            setEditingOrder(null);
+            setSelectedFunction("list");
+          }}
+        />
       )}
-
     </div>
   );
 };

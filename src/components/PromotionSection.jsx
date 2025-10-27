@@ -65,7 +65,7 @@ const PromotionSection = () => {
 
     try {
       await axios.delete(`${baseUrl}/${id}`);
-      toast.success(" Xóa khuyến mãi thành công!");
+      toast.success("✅ Xóa khuyến mãi thành công!");
       fetchPromotions(searchKeyword.trim(), currentPage);
     } catch (err) {
       toast.error("❌ Không thể xóa khuyến mãi!");
@@ -86,16 +86,16 @@ const PromotionSection = () => {
   };
 
   return (
-    <div className="promotion-container">
+    <div className="staff-container">
       <ToastContainer />
-      <h1 className="promotion-title">🎁 Danh Sách Khuyến Mãi</h1>
+      <h1 className="staff-title">🎁 KHUYẾN MÃI 🎁</h1>
 
-      <div className="promotion-buttons">
+      <div className="staff-function-buttons">
         <button
           className={selectedFunction === "list" ? "active" : ""}
           onClick={() => setSelectedFunction("list")}
         >
-          📋 Danh sách khuyến mãi
+          Danh sách khuyến mãi
         </button>
         <button
           className={selectedFunction === "add" ? "active" : ""}
@@ -105,7 +105,7 @@ const PromotionSection = () => {
             setEditingPromotion(null);
           }}
         >
-          ➕ Thêm khuyến mãi
+          Thêm khuyến mãi
         </button>
       </div>
 
@@ -114,18 +114,20 @@ const PromotionSection = () => {
           <div className="search-section">
             <input
               type="text"
+              className="search-input"
               placeholder="🔍 Nhập tên hoặc loại khuyến mãi..."
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
             />
-            <button onClick={handleSearch}>Tìm kiếm</button>
+            <button className="search-button" onClick={handleSearch}>
+              Tìm kiếm
+            </button>
             <button
               className="sort-icon-button"
               onClick={() => setShowSortOptions(!showSortOptions)}
             >
-              ⚙️ Sắp xếp
+              Sắp xếp
             </button>
-
             {showSortOptions && (
               <div className="sort-options">
                 <select
@@ -152,8 +154,8 @@ const PromotionSection = () => {
             )}
           </div>
 
-          <div className="promotion-table-section">
-            <table className="promotion-table">
+          <div className="staff-table-section">
+            <table className="staff-table">
               <thead>
                 <tr>
                   <th>ID</th>

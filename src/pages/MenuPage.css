@@ -7,5 +7,5 @@
 
 .menu-content {
   flex: 1;
-  padding-top: 70px; /* tạo khoảng cho Navbar cố định nếu có */
+  padding-top: 70px;
 }

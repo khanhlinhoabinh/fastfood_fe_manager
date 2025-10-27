@@ -16,7 +16,6 @@ export default function PaymentSection() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [showSortOptions, setShowSortOptions] = useState(false);
-
   const pageSize = 5;
 
   const fetchPayments = async (keyword = "", page = 0) => {
@@ -36,7 +35,7 @@ export default function PaymentSection() {
       setPayments(list);
 
       if (!keyword.trim() && !(sortField && sortOrder)) {
-        setTotalPages(data.totalPages || 1);
+        setTotalPages(data.totalPages ?? 1);
         setCurrentPage(page);
       } else {
         setTotalPages(1);
@@ -73,10 +72,9 @@ export default function PaymentSection() {
       title: "Bạn có chắc muốn xoá thanh toán này?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Xóa",
+      confirmButtonText: "Xoá",
       cancelButtonText: "Hủy",
     });
-
     if (!result.isConfirmed) return;
 
     try {
@@ -95,11 +93,11 @@ export default function PaymentSection() {
   };
 
   return (
-    <div className="menu-container">
+    <div className="staff-container">
       <ToastContainer />
-      <h2>💳 Quản lý Thanh toán</h2>
+      <h1 className="staff-title">💳 THANH TOÁN 💳</h1>
 
-      <div className="menu-function-buttons">
+      <div className="staff-function-buttons">
         <button
           onClick={() => {
             setShowForm(false);
@@ -121,7 +119,7 @@ export default function PaymentSection() {
 
       {!showForm && (
         <>
-          <div className="menu-search">
+          <div className="search-section">
             <input
               type="text"
               placeholder="🔍 Tìm theo phương thức..."
@@ -129,107 +127,119 @@ export default function PaymentSection() {
               onChange={(e) => setSearchKeyword(e.target.value)}
               className="search-input"
             />
-            <button onClick={handleSearch}>Tìm kiếm</button>
+            <button className="search-button" onClick={handleSearch}>
+              Tìm kiếm
+            </button>
             <button
               className="sort-icon-button"
               onClick={() => setShowSortOptions(!showSortOptions)}
             >
-              ⚙️ Sắp xếp
+              Sắp xếp
             </button>
+            {showSortOptions && (
+              <div className="sort-options">
+                <select
+                  value={sortField}
+                  onChange={(e) => setSortField(e.target.value)}
+                >
+                  <option value="">-- Chọn tiêu chí --</option>
+                  <option value="paymentDate">Ngày thanh toán</option>
+                  <option value="amount">Số tiền</option>
+                </select>
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                >
+                  <option value="">-- Chọn thứ tự --</option>
+                  <option value="asc">Tăng dần</option>
+                  <option value="desc">Giảm dần</option>
+                </select>
+                <button onClick={handleSortApply}>Áp dụng</button>
+              </div>
+            )}
           </div>
 
-          {showSortOptions && (
-            <div className="sort-options">
-              <select
-                value={sortField}
-                onChange={(e) => setSortField(e.target.value)}
-              >
-                <option value="">-- Chọn tiêu chí --</option>
-                <option value="paymentDate">Ngày thanh toán</option>
-                <option value="amount">Số tiền</option>
-              </select>
-              <select
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-              >
-                <option value="">-- Chọn thứ tự --</option>
-                <option value="asc">Tăng dần</option>
-                <option value="desc">Giảm dần</option>
-              </select>
-              <button onClick={handleSortApply}>Áp dụng</button>
-            </div>
-          )}
-
-          <h3>📋 Danh sách Thanh toán</h3>
-          <table className="menu-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Mã đơn (Order ID)</th>
-                <th>Phương thức</th>
-                <th>Số tiền</th>
-                <th>Tiền thừa</th>
-                <th>Ngày TT</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.isArray(payments) && payments.length > 0 ? (
-                payments.map((p) => (
-                  <tr key={p.paymentID ?? p.id}>
-                    <td>{p.paymentID ?? p.id}</td>
-                    <td>{p.order?.orderID}</td>
-                    <td>{p.method}</td>
-                    <td>{p.amount}</td>
-                    <td>{p.changeAmount}</td>
-                    <td>
-                      {p.paymentDate
-                        ? new Date(p.paymentDate).toLocaleString()
-                        : ""}
-                    </td>
-                    <td>
-                      <button onClick={() => handleEdit(p)}>✏️ Sửa</button>
-                      <button onClick={() => handleDelete(p.paymentID ?? p.id)}>
-                        ❌ Xóa
-                      </button>
+          <div className="staff-table-section">
+            <table className="staff-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Mã đơn</th>
+                  <th>Phương thức</th>
+                  <th>Số tiền</th>
+                  <th>Tiền thừa</th>
+                  <th>Ngày TT</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Array.isArray(payments) && payments.length > 0 ? (
+                  payments.map((p) => (
+                    <tr key={p.paymentID ?? p.id}>
+                      <td>{p.paymentID ?? p.id}</td>
+                      <td>{p.order?.orderID}</td>
+                      <td>{p.method}</td>
+                      <td>{p.amount}</td>
+                      <td>{p.changeAmount}</td>
+                      <td>
+                        {p.paymentDate
+                          ? new Date(p.paymentDate).toLocaleString()
+                          : ""}
+                      </td>
+                      <td>
+                        <button
+                          className="edit-button"
+                          onClick={() => handleEdit(p)}
+                        >
+                          ✏️ Sửa
+                        </button>
+                        <button
+                          className="delete-button"
+                          onClick={() =>
+                            handleDelete(p.paymentID ?? p.id)
+                          }
+                        >
+                          ❌ Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="no-data">
+                      Không có dữ liệu thanh toán
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="no-data">
-                    Không có dữ liệu thanh toán
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
 
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 0}
-              >
-                ⬅ Trước
-              </button>
-              {Array.from({ length: totalPages }, (_, index) => (
+            {totalPages > 1 && (
+              <div className="pagination">
                 <button
-                  key={index}
-                  className={index === currentPage ? "active-page" : ""}
-                  onClick={() => handlePageChange(index)}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 0}
                 >
-                  {index + 1}
+                  ⬅ Trước
                 </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages - 1}
-              >
-                Sau ➡
-              </button>
-            </div>
-          )}
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index}
+                    className={index === currentPage ? "active-page" : ""}
+                    onClick={() => handlePageChange(index)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages - 1}
+                >
+                  Sau ➡
+                </button>
+              </div>
+            )}
+          </div>
         </>
       )}
 

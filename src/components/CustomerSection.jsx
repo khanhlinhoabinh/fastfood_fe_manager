@@ -102,7 +102,7 @@ const CustomerSection = () => {
   return (
     <div className="customer-container">
       <ToastContainer />
-      <h1 className="customer-title">👥 Danh Sách Khách Hàng</h1>
+      <h1 className="customer-title">👥 KHÁCH HÀNG 👥</h1>
 
       <div className="customer-function-buttons">
         <button
@@ -140,7 +140,7 @@ const CustomerSection = () => {
               className="sort-icon-button"
               onClick={() => setShowSortOptions(!showSortOptions)}
             >
-              ⚙️ Sắp xếp
+              Sắp xếp
             </button>
             {showSortOptions && (
               <div className="sort-options">
@@ -166,7 +166,6 @@ const CustomerSection = () => {
           </div>
 
           <div className="customer-table-section">
-            <h2>📋 Thông tin khách hàng</h2>
             <table className="customer-table">
               <thead>
                 <tr>

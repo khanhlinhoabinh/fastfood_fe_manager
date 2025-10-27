@@ -29,7 +29,6 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (
       !formData.name.trim() ||
       !formData.phone.trim() ||
@@ -50,7 +49,6 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         await axios.post("http://localhost:8080/api/customers", formData);
         toast.success("✅ Thêm khách hàng mới thành công!");
       }
-
       if (onSave) onSave();
     } catch (err) {
       console.error("❌ Lỗi khi lưu khách hàng:", err);
@@ -59,42 +57,41 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
   };
 
   return (
-    <form className="customer-form" onSubmit={handleSubmit}>
-      <h3>{customer ? "✏️ Sửa khách hàng" : "➕ Thêm khách hàng mới"}</h3>
+    <form onSubmit={handleSubmit} className="customer-form">
+      <h4>{customer ? "✏️ Sửa khách hàng" : "➕ Thêm khách hàng mới"}</h4>
 
-      <label>Tên khách hàng</label>
       <input
         type="text"
         name="name"
+        placeholder="Tên khách hàng"
         value={formData.name}
         onChange={handleChange}
       />
 
-      <label>Số điện thoại</label>
       <input
         type="text"
         name="phone"
+        placeholder="Số điện thoại"
         value={formData.phone}
         onChange={handleChange}
       />
 
-      <label>Email</label>
       <input
         type="email"
         name="email"
+        placeholder="Email"
         value={formData.email}
         onChange={handleChange}
       />
 
-      <label>Điểm tích lũy</label>
       <input
         type="number"
         name="loyaltyPoints"
+        placeholder="Điểm tích lũy"
         value={formData.loyaltyPoints}
         onChange={handleChange}
       />
 
-      <label>Loại thành viên</label>
       <select
         name="memberType"
         value={formData.memberType}

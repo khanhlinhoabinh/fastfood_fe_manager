@@ -5,93 +5,85 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Tiêu đề */
 .menu-title {
   text-align: center;
   font-size: 28px;
-  color: #d32f2f;
+  color: #2e7d32;
   margin-bottom: 25px;
 }
 
-/* Nút chức năng chính */
 .menu-function-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .menu-function-buttons button {
-  padding: 10px 20px;
+  padding: 8px 14px;
   background-color: #f6d365;
   border: 1px solid #d3a625;
   border-radius: 8px;
-  font-size: 16px;
   cursor: pointer;
+  font-size: 16px;
   transition: 0.3s;
 }
 
 .menu-function-buttons button.active,
 .menu-function-buttons button:hover {
-  background-color: #ff9800;
+  background-color: #d3a625;
   color: white;
 }
 
-/* Tiêu đề danh sách */
+.menu-search {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.menu-search input {
+  width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.menu-search button {
+  background-color: #81c784;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-search button:hover {
+  background-color: #66bb6a;
+}
+
 .menu-table-section h2 {
   text-align: center;
   color: #444;
   margin-bottom: 15px;
 }
 
-/* Thanh tìm kiếm */
-.menu-search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.menu-search input {
-  padding: 8px 12px;
-  width: 250px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  outline: none;
-}
-
-.menu-search input:focus {
-  border-color: #ff9800;
-  box-shadow: 0 0 5px rgba(255, 152, 0, 0.4);
-}
-
-.menu-search button {
-  padding: 8px 14px;
-  background-color: #ff9800;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.menu-search button:hover {
-  background-color: #e65100;
-}
-
-/* Bảng */
 .menu-table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
 }
 
 .menu-table th,
 .menu-table td {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 10px;
   text-align: center;
+  font-size: 14px;
 }
 
 .menu-table th {
@@ -102,110 +94,53 @@
   background-color: #fff3e0;
 }
 
-/* Nút xoá */
-.delete-btn {
-  background-color: #e57373;
+.delete-button {
+  background-color: #ef9a9a;
   color: white;
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
-.delete-btn:hover {
-  background-color: #c62828;
+.delete-button:hover {
+  filter: brightness(0.95);
 }
 
-/* Khi không có dữ liệu */
 .no-data {
   text-align: center;
   color: #999;
   padding: 20px;
 }
 
-/* ✅ PHÂN TRANG */
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-top: 20px;
   gap: 8px;
 }
 
 .pagination button {
-  padding: 8px 14px;
+  padding: 8px 12px;
   background-color: #ffb74d;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
   font-weight: 500;
 }
 
-.pagination button:hover:not(:disabled) {
-  background-color: #f57c00;
-  color: white;
-}
-
-.pagination button:disabled {
-  background-color: #ffe0b2;
-  cursor: not-allowed;
-}
-
-.pagination .active-page {
+.pagination button.active-page {
   background-color: #e65100;
   color: white;
   font-weight: bold;
 }
 
-/* ✅ Nút icon sắp xếp */
-.sort-icon-button {
-  background-color: #ffe082;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.sort-icon-button:hover {
-  background-color: #ffca28;
-  color: white;
-}
-
-/* ✅ Dropdown sắp xếp */
-.sort-options {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.sort-options select {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.sort-options button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.sort-options button:hover {
-  background-color: #388e3c;
-}
-/* ✅ FORM THÊM / SỬA MÓN ĂN */
 .menu-form {
   display: flex;
   flex-direction: column;
@@ -230,31 +165,16 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  background: #ff9800;
+  background: #ffb74d;
   color: white;
   font-weight: bold;
 }
 
 .menu-form button:hover {
-  background: #f57c00;
+  background: #e65100;
 }
 
-.menu-form .form-buttons {
+.form-buttons {
   display: flex;
   justify-content: space-between;
-}
-
-/* ✅ Nút sửa */
-.edit-button {
-  background-color: #64b5f6;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.edit-button:hover {
-  background-color: #1976d2;
 }

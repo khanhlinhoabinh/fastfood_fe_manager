@@ -82,28 +82,48 @@ const OrderDetailSection = () => {
   };
 
   return (
-    <div className="order-container">
+    <div className="staff-container">
       <ToastContainer />
-      <h2 className="order-title">📋 Danh sách chi tiết đơn hàng</h2>
+      <h2 className="staff-title">📋 CHI TIẾT ĐƠN HÀNG 📋</h2>
 
-      <div className="order-function-buttons">
-        <button className={selectedFunction === "list" ? "active" : ""} onClick={() => {
-          setSelectedFunction("list");
-          setShowForm(false);
-          fetchOrderDetails();
-        }}>📄 Danh sách</button>
+      <div className="staff-function-buttons">
+        <button
+          className={selectedFunction === "list" ? "active" : ""}
+          onClick={() => {
+            setSelectedFunction("list");
+            setShowForm(false);
+            fetchOrderDetails();
+          }}
+        >
+          Danh sách chi tiết đơn hàng
+        </button>
 
-        <button className={selectedFunction === "add" ? "active" : ""} onClick={() => {
-          setSelectedFunction("add");
-          setShowForm(true);
-          setEditingOrderDetail(null);
-        }}>➕ Thêm mới</button>
+        <button
+          className={selectedFunction === "add" ? "active" : ""}
+          onClick={() => {
+            setSelectedFunction("add");
+            setShowForm(true);
+            setEditingOrderDetail(null);
+          }}
+        >
+          Thêm mới
+        </button>
       </div>
 
-      <div className="order-search">
-        <input type="text" placeholder="🔍 Tìm theo mã đơn hoặc mã món..." value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
+      <div className="search-section">
+        <input
+          type="text"
+          placeholder="🔍 Tìm theo mã đơn hoặc mã món..."
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
         <button onClick={handleSearch}>Tìm kiếm</button>
-        <button className="sort-icon-button" onClick={() => setShowSortOptions(!showSortOptions)}>⚙️ Sắp xếp</button>
+        <button
+          className="sort-icon-button"
+          onClick={() => setShowSortOptions(!showSortOptions)}
+        >
+          Sắp xếp
+        </button>
       </div>
 
       {showSortOptions && (
@@ -121,41 +141,52 @@ const OrderDetailSection = () => {
       )}
 
       {selectedFunction === "list" && (
-        <table className="order-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Mã đơn</th>
-              <th>Mã món</th>
-              <th>Số lượng</th>
-              <th>Đơn giá (₫)</th>
-              <th>Ghi chú</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orderDetails.length > 0 ? (
-              orderDetails.map((detail) => (
-                <tr key={detail.orderDetailID}>
-                  <td>{detail.orderDetailID}</td>
-                  <td>{detail.orderID}</td>
-                  <td>{detail.menuItemID}</td>
-                  <td>{detail.quantity}</td>
-                  <td>{detail.unitPrice?.toLocaleString()}</td>
-                  <td>{detail.note}</td>
-                  <td>
-                    <button className="edit-button" onClick={() => handleEdit(detail)}>✏️ Sửa</button>
-                    <button className="delete-btn" onClick={() => handleDelete(detail.orderDetailID)}>❌ Xoá</button>
+        <div className="staff-table-section">
+          <table className="staff-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Mã đơn</th>
+                <th>Mã món</th>
+                <th>Số lượng</th>
+                <th>Đơn giá (₫)</th>
+                <th>Ghi chú</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orderDetails.length > 0 ? (
+                orderDetails.map((detail) => (
+                  <tr key={detail.orderDetailID}>
+                    <td>{detail.orderDetailID}</td>
+                    <td>{detail.orderID}</td>
+                    <td>{detail.menuItemID}</td>
+                    <td>{detail.quantity}</td>
+                    <td>{detail.unitPrice?.toLocaleString()}</td>
+                    <td>{detail.note}</td>
+                    <td>
+                      <button className="edit-button" onClick={() => handleEdit(detail)}>
+                        ✏️ Sửa
+                      </button>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDelete(detail.orderDetailID)}
+                      >
+                        ❌ Xoá
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="no-data">
+                    Không có dữ liệu chi tiết đơn hàng
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="no-data">Không có dữ liệu chi tiết đơn hàng</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {(selectedFunction === "add" || selectedFunction === "edit") && showForm && (

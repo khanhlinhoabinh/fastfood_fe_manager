@@ -104,7 +104,7 @@ const StaffSection = () => {
   return (
     <div className="staff-container">
       <ToastContainer />
-      <h1 className="staff-title">👨‍🍳 Danh Sách Nhân Viên</h1>
+      <h1 className="staff-title">👨‍🍳 NHÂN VIÊN 👨‍🍳</h1>
 
       <div className="staff-function-buttons">
         <button className={selectedFunction === "list" ? "active" : ""} onClick={() => setSelectedFunction("list")}>
@@ -124,7 +124,7 @@ const StaffSection = () => {
           <div className="search-section">
             <input type="text" placeholder="🔍 Nhập tên hoặc chức vụ..." value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} className="search-input" />
             <button onClick={handleSearch} className="search-button">Tìm kiếm</button>
-            <button className="sort-icon-button" onClick={() => setShowSortOptions(!showSortOptions)}>⚙️ Sắp xếp</button>
+            <button className="sort-icon-button" onClick={() => setShowSortOptions(!showSortOptions)}>Sắp xếp</button>
             {showSortOptions && (
               <div className="sort-options">
                 <select value={sortField} onChange={(e) => setSortField(e.target.value)}>
@@ -143,7 +143,6 @@ const StaffSection = () => {
           </div>
 
           <div className="staff-table-section">
-            <h2>📋 Thông tin nhân viên</h2>
             <table className="staff-table">
               <thead>
                 <tr>

@@ -105,7 +105,7 @@ const handleEdit = (item) => {
   return (
     <div className="menu-container">
        <ToastContainer />
-      <h1 className="menu-title">🍔 Danh Sách Món Ăn</h1>
+      <h1 className="menu-title">🍔 THỰC ĐƠN 🍔</h1>
 
       <div className="menu-function-buttons">
         <button
@@ -123,7 +123,7 @@ const handleEdit = (item) => {
             setEditingMenuItem(null);
           }}
         >
-          ➕ Thêm món mới
+          Thêm món mới
         </button>
 
       </div>
@@ -148,7 +148,7 @@ const handleEdit = (item) => {
               className="sort-icon-button"
               onClick={() => setShowSortOptions(!showSortOptions)}
             >
-              ⚙️ Sắp xếp
+              Sắp xếp
             </button>
 
             {showSortOptions && (
@@ -177,7 +177,6 @@ const handleEdit = (item) => {
 
           {/* ✅ Bảng danh sách món ăn */}
           <div className="menu-table-section">
-            <h2>📋 Danh sách món ăn</h2>
             <table className="menu-table">
               <thead>
                 <tr>

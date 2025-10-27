@@ -120,79 +120,64 @@ const OrderForm = ({ order, onClose, onSaved }) => {
   };
 
   return (
-    <form className="customer-form" onSubmit={handleSubmit}>
-      <h3>{form.id ? "✏️ Sửa đơn hàng" : "➕ Thêm đơn hàng mới"}</h3>
+    <form className="staff-form" onSubmit={handleSubmit}>
+  <h3>{form.id ? "✏️ Sửa đơn hàng" : "➕ Thêm đơn hàng mới"}</h3>
 
-      {/* --- Dropdown Mã khách hàng --- */}
-      <label>Mã khách hàng</label>
-      <select
-        name="customerID"
-        value={form.customerID}
-        onChange={handleChange}
-        required
-      >
-        <option value="">-- Chọn mã khách hàng --</option>
-        {customers.map((c) => (
-          <option key={c.customerID} value={c.customerID}>
-            {c.customerID} - {c.name}
-          </option>
-        ))}
-      </select>
+  <label>Mã khách hàng</label>
+  <select name="customerID" value={form.customerID} onChange={handleChange} required>
+    <option value="">-- Chọn mã khách hàng --</option>
+    {customers.map((c) => (
+      <option key={c.customerID} value={c.customerID}>
+        {c.customerID} - {c.name}
+      </option>
+    ))}
+  </select>
 
-      {/* --- Dropdown Mã nhân viên --- */}
-      <label>Mã nhân viên</label>
-      <select
-        name="staffID"
-        value={form.staffID}
-        onChange={handleChange}
-        required
-      >
-        <option value="">-- Chọn mã nhân viên --</option>
-        {staffList.map((s) => (
-          <option key={s.staffID} value={s.staffID}>
-            {s.staffID} - {s.name}
-          </option>
-        ))}
-      </select>
+  <label>Mã nhân viên</label>
+  <select name="staffID" value={form.staffID} onChange={handleChange} required>
+    <option value="">-- Chọn mã nhân viên --</option>
+    {staffList.map((s) => (
+      <option key={s.staffID} value={s.staffID}>
+        {s.staffID} - {s.name}
+      </option>
+    ))}
+  </select>
 
-      {/* --- Ngày đặt --- */}
-      <label>Ngày giờ đặt</label>
-      <input
-        type="datetime-local"
-        name="orderDate"
-        value={form.orderDate}
-        onChange={handleChange}
-        required
-      />
+  <label>Ngày giờ đặt</label>
+  <input
+    type="datetime-local"
+    name="orderDate"
+    value={form.orderDate}
+    onChange={handleChange}
+    required
+  />
 
-      {/* --- Tổng tiền --- */}
-      <label>Tổng tiền (₫)</label>
-      <input
-        type="number"
-        name="totalAmount"
-        min="0"
-        value={form.totalAmount}
-        onChange={handleChange}
-        required
-      />
+  <label>Tổng tiền (₫)</label>
+  <input
+    type="number"
+    name="totalAmount"
+    min="0"
+    value={form.totalAmount}
+    onChange={handleChange}
+    required
+  />
 
-      {/* --- Trạng thái --- */}
-      <label>Trạng thái</label>
-      <select name="status" value={form.status} onChange={handleChange}>
-        <option value="Đã thanh toán">Đã thanh toán</option>
-        <option value="Chưa thanh toán">Chưa thanh toán</option>
-        <option value="Đang xử lý">Đang xử lý</option>
-      </select>
+  <label>Trạng thái</label>
+  <select name="status" value={form.status} onChange={handleChange}>
+    <option value="Đã thanh toán">Đã thanh toán</option>
+    <option value="Chưa thanh toán">Chưa thanh toán</option>
+    <option value="Đang xử lý">Đang xử lý</option>
+  </select>
 
-      <div className="form-buttons">
-        <button type="submit" disabled={saving}>
-          💾 {saving ? "Đang lưu..." : "Lưu"}
-        </button>
-        <button type="button" onClick={onClose} disabled={saving}>
-          ❌ Hủy
-        </button>
-      </div>
-    </form>
+  <div className="form-buttons">
+    <button type="submit" disabled={saving}>
+      💾 {saving ? "Đang lưu..." : "Lưu"}
+    </button>
+    <button type="button" onClick={onClose} disabled={saving}>
+      ❌ Hủy
+    </button>
+  </div>
+</form>
   );
 };
 
